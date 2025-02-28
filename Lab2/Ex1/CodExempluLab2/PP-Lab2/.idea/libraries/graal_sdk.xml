@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="graal-sdk">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../../PROGRAME/GraalVM/graalvm-ce-java8-19.3.1/jre/lib/boot/graal-sdk.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
