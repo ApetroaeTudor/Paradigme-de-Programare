@@ -1,0 +1,17 @@
+String RCode="library(lattice)\n"+ //install.packages("lattice", repos = "https://cloud.r-project.org/");
+                "XLINE <- XLINE_imported; print(XLINE)\n"+
+                "YLINE <- YLINE_imported; print(YLINE)\n"+
+                "dataFrame <- data.frame(X=XLINE,Y=YLINE)\n"+
+                "model <- lm(Y ~ X, data=dataFrame)\n"+
+                "print(summary(model)); print(ImgPathAndName)\n"+
+                //"print()\n"+
+                "png(ImgPathAndName, width = 800, height = 600)\n"+
+                "xyplot(Y ~ X, data = dataFrame,\n"+
+                "       main = \"Regresie liniara cu lattice\",\n"+
+                "       xlab = \"XLINE\",\n"+
+                "       ylab = \"YLINE\",\n"+
+                "       panel = function(x, y, ...) {\n"+
+                "         panel.xyplot(x, y, col = PctColor, pch = 19, ...)\n"+
+                "         panel.abline(model, col = LineColor, lwd = 2)\n"+
+                "       })\n"+
+                "dev.off(); print(\"DONE\")";
