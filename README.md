@@ -1,9 +1,10 @@
 # Laborator PP
 
 ## Lab1
-Ex1 - Calculator Java completat cu forma postfixata
-Ex2 - Server local git folosind Docker
+Ex1 - Calculator Java completat cu forma postfixata<br>
+Ex2 - Server local git folosind Docker<br>
 
 ## Lab2
 Ex1 - Polyglot GraalVM, Exercitii Laborator + Hash pentru a afisa toate
-cuvintele cu aceeasi suma de control  
+cuvintele cu aceeasi suma de control<br>
+Ex2 - Polyglot GraalVM, citeste un set de date dintr-un fisier, aplica o regresie liniara intr-un script R, genereaza o imagine PNG si o afiseaza<br>  
