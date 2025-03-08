@@ -37,18 +37,19 @@ public class RHistogram {
     public static<E> void BuildHistogram(E[] values, String fname, boolean how) {
         //construim un context Polyglot pentru R
         Context context = Context.newBuilder("R").allowAllAccess(true).build();
-        String src;
-        if (how) {
+        String src; //RCode
+
+        if (how) { //true
             src =
                     "library(lattice); " +                  //GraalVM stie sa foloseasca momentan libraria lattice si grid pentru plotare
                             "function(g, w, h, data) { " +  //functia R primeste 4 parametri : suprafata grafica din java, Width, Height si array-ul de cuvinte
-                            "   grDevices:::awt(w,h,g);" +  //folosim Java awt pentru afisare
+                            "   grDevices:::awt(w,h,g);" +//folosim Java awt pentru afisare
                             "   B <- c(data);" +            //construim un array R dintr-un array Java
                             "   tab <- table(B);" +         //convertim la table, array-ul B. Operatia va produce o histograma cu perechi val_unica -> frecventa
                             "   print(barchart(tab));" +    //afisam histograma folosind functia barchart(), mai corect ar fi fost barplot() insa nu functioneaza momentan
                             "   dev.off();" +               //inchidem suprafata
                             "}";
-        }else{
+        }else{ //false
             src =
                     "library(lattice); " +                  //GraalVM stie sa foloseasca momentan libraria lattice si grid pentru plotare
                             "function(g, w, h, data) { " +  //functia R primeste 4 parametri : suprafata grafica din java, Width, Height si array-ul de cuvinte
