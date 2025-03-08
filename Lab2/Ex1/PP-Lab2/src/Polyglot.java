@@ -41,7 +41,8 @@ class Polyglot {
                     "print(Str)\n"+
                     "S=sum(ord(ch) for ch in Str)\n"+
                     "S=S%25\n"+
-                    "S";
+                    "print(S)\n"+
+                    "S\n";
         Value val= polyglot.eval("python", pyCode);
         int resultInt=val.asInt();
 
@@ -52,9 +53,6 @@ class Polyglot {
         // inchidem contextul Polyglot
         polyglot.close();
 
-
-        //"Sum = sum(ord(ch) for ch in '\" + token + \"')\n"+
-        //        "int(np.polyval(coef,Sum))";
 
         return resultInt;
     }

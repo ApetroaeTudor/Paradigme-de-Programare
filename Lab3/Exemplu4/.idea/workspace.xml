@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3668a4ff-d523-4f1c-827b-7a020735e2d1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../Lab2/Ex2/RegrLiniara/.idea/material_theme_project_new.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Lab2/Ex1/PP-Lab2/out/production/lab2/Polyglot.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../Lab2/Ex1/PP-Lab2/out/production/lab2/Polyglot.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Lab2/Ex1/PP-Lab2/src/Polyglot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Lab2/Ex1/PP-Lab2/src/Polyglot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Lab2/Ex2/RegrLiniara/intermediary.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Lab2/Ex2/RegrLiniara/intermediary.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2tymx9CKmdfXRoFYqU4JSfFKiIS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Kotlin.MainKt.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/tudor/AN2/PP/pp-1211b-homeworks-ApetroaeTudor/Lab3/LabEx2_BazatPeExemplul4",
+    "onboarding.tips.debug.path": "/home/tudor/AN2/PP/LaboratoarePP_Repo/pp-1211b-homeworks-ApetroaeTudor/Lab3/PP-Lab3/Exemplu4/src/Main.kt",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3668a4ff-d523-4f1c-827b-7a020735e2d1" name="Changes" comment="" />
+      <created>1741332931658</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1741332931658</updated>
+    </task>
+    <servers />
+  </component>
+</project>
