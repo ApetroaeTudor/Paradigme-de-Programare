@@ -68,6 +68,12 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.19.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.positiondev.epublib</groupId>
             <artifactId>epublib-core</artifactId>
             <version>3.1</version>
