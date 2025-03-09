@@ -15,3 +15,5 @@
 **LabEx3** - Kotlin + Kandy: Analizarea frecventelor de caractere/cuvinte. Plotare grafica a frecventelor<br>
 **Ex1** - Kotlin + JSoup: Analizarea unui RSS feed. Se extrag titlurile si linkurile corespunzatoare<br>
 **Ex2** - Kotlin + epublib-core + JSoup: Deschiderea unui epub si prelucrarea textului din el. Folosind regex se elimina/modifica anumite elemente<br> 
+**Ex3** - Kotlin + JSoup: Accesarea unui url. Cu un get request se obtin datele. Se face un arbore cu linkurile care pastreaza acelasi base url<br>
+

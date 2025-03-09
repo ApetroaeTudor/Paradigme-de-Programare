@@ -1,21 +1,16 @@
 
 fun main() {
-    val url:String="https://annas-archive.org/"
+    val url:String="https://github.com/"
+    //val url:String="https://annas-archive.org/"
 
     try {
-        val finalRefs:List<String> = parseFile(url)
-        val tagList=makeTagList(finalRefs,url)
-        println(tagList)
-        Tag.linkChildrenByDepth(1,tagList,url)
-        Tag.linkChildrenByDepth(2,tagList)
 
-        tagList.sortBy { it.depth } //primul element e capul arborelui
+        val root=deserializeTree(url)
+        serializeTreeToFile(root)
 
-        tagList.forEach {
-            it.printTagWithChildrenAndParent()
-        }
-
-
+    }
+    catch (e:java.io.IOException){
+        println("failed to submit the get() request")
     }
     catch (e:Exception){
         println(e.message)
