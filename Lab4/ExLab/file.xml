@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <site name="Example">
+        <a href="https://example.com">Visit Example</a>
+        <link href="https://example.com/style.css" rel="stylesheet"/>
+    </site>
+    <resources>
+        <file href="https://example.com/file.pdf"/>
+        <image src="image.jpg" href="https://example.com/image"/>
+    </resources>
+</root>
