@@ -1,0 +1,26 @@
+# Basic YAML structure
+name: John Doe
+age: 30
+email: johndoe@example.com
+is_active: true
+
+# List of items
+fruits:
+  - apple
+  - banana
+  - cherry
+
+# Nested structure
+address:
+  street: 123 Main St
+  city: New York
+  zip: 10001
+
+# List of objects
+employees:
+  - name: Alice
+    age: 28
+    role: Developer
+  - name: Bob
+    age: 35
+    role: Manager
