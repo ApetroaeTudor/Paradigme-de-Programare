@@ -2,7 +2,16 @@ import java.util.Stack
 
 class JsonParser() {
 
-    fun parse(text:String,position:Int=0):Pair<JsonObj,Int>{ // se presupune ca textul primit nu are whitespaces
+    fun parse(text:String):Map<Any?,Any?>{
+        var jsonStr=text.replace("\\s+".toRegex(),"")
+        var myMap = mutableMapOf<Any?,Any?>()
+        myMap.put(parseReturnPair(jsonStr,0).first,parseReturnPair(jsonStr,0).second)
+        return myMap
+    }
+
+
+
+    fun parseReturnPair(text:String,position:Int=0):Pair<JsonObj,Int>{ // se presupune ca textul primit nu are whitespaces
         var newNode = JsonObj() //nodul de baza
         var index=position
 
@@ -52,7 +61,7 @@ class JsonParser() {
             }
 
             text[index] == '{' -> { //inca un json obj
-                parse(text, index) //main parse function
+                parseReturnPair(text, index) //main parse function
             }
 
             text[index].isDigit() -> {
@@ -84,5 +93,16 @@ class JsonParser() {
             text.drop(index).startsWith("null") -> null to index + 4
             else -> throw IllegalArgumentException("token ilegal")
         }
+    }
+}
+
+
+
+fun printJsonFromString(text:String){
+    val parser=JsonParser()
+    val a = parser.parse(text)
+    a.forEach(){ (key,value) ->
+        if(key is JsonObj)
+            recursivePrintJsonTree(key)
     }
 }
