@@ -31,8 +31,10 @@ class HtmlXmlParser : Parser {
         fun searchRecursive(root: Element){
             if(root.hasAttr("href")) {
                 val temp= root.select("[href]").toString()
-                searchKey.toRegex().find(temp)?.let{returnList.add(it.value)}
-                //returnList.add(searchKey.toRegex().find(temp)?.value)
+                searchKey.toRegex().find(temp)?.let{
+                    if(!returnList.contains(it.value))
+                        returnList.add(it.value)
+                }
             }
             root.children().forEach(){
                 searchRecursive(it)
@@ -43,4 +45,5 @@ class HtmlXmlParser : Parser {
 
         return returnList
     }
+
 }

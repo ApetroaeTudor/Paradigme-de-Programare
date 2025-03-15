@@ -43,5 +43,6 @@ fun checkFileType(url:String):String{
         println(e.message)
     }
 
-    throw IllegalArgumentException("Response from url does not match any defined types")
+    return returnedString
+
 }

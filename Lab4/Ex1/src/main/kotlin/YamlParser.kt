@@ -42,14 +42,6 @@ class YamlParser : Parser {
     }
 
 
-
-
-
-
-
-
-
-
     override fun getResources(text: String, searchKey: String): List<String> {
         val myDataStructure = parse(text).keys.first()
         var returnList: MutableList<String> = mutableListOf()
