@@ -9,18 +9,38 @@ class HtmlXmlParser : Parser {
         myMap.put(parsedXmlHtmlDocument,"type:Document") //solutie temporara
         return myMap
     }
-}
 
-fun printXmlHtml(text:String){
-    val parsedXmlHtmlDocument = Jsoup.parse(text)
+    override fun print(text: String) {
+        val parsedXmlHtmlDocument = Jsoup.parse(text)
 
-    fun printElemsRecursive(root: Element, depth:Int=0){
-        if(root.hasText()) println(" ".repeat(depth)+root.tagName()+": " + root.text().trim())
-        if(root.hasAttr("href")) println(" ".repeat(depth+2) + " -----> hrefs: "+ root.select("[href]"))
-        root.children().forEach(){
-            printElemsRecursive(it,depth+1)
+        fun printElemsRecursive(root: Element, depth:Int=0){
+            if(root.hasText()) println(" ".repeat(depth)+root.tagName()+": " + root.text().trim())
+            if(root.hasAttr("href")) println(" ".repeat(depth+2) + " -----> hrefs: "+ root.select("[href]"))
+            root.children().forEach(){
+                printElemsRecursive(it,depth+1)
+            }
         }
+
+        printElemsRecursive(parsedXmlHtmlDocument,0)
     }
 
-    printElemsRecursive(parsedXmlHtmlDocument,0)
+    override fun getResources(text: String, searchKey: String): List<String> {
+        val myDataStructure=parse(text).keys.first()
+        val returnList:MutableList<String> = mutableListOf()
+
+        fun searchRecursive(root: Element){
+            if(root.hasAttr("href")) {
+                val temp= root.select("[href]").toString()
+                searchKey.toRegex().find(temp)?.let{returnList.add(it.value)}
+                //returnList.add(searchKey.toRegex().find(temp)?.value)
+            }
+            root.children().forEach(){
+                searchRecursive(it)
+            }
+        }
+
+        searchRecursive(myDataStructure as Element)
+
+        return returnList
+    }
 }

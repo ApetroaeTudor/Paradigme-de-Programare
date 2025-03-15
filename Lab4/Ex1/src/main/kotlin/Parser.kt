@@ -2,6 +2,10 @@ import org.jsoup.Jsoup
 
 interface Parser {
     fun parse(text:String):MutableMap<Any?,Any?>
+
+    fun getResources(text:String,searchKey:String):List<String>
+
+    fun print(text:String)
 }
 
 

@@ -5,8 +5,57 @@ class JsonParser() : Parser {
     override fun parse(text:String):MutableMap<Any?,Any?>{
         var jsonStr=text.replace("\\s+".toRegex(),"")
         var myMap = mutableMapOf<Any?,Any?>()
-        myMap.put(parseReturnPair(jsonStr,0).first,parseReturnPair(jsonStr,0).second)
+        myMap.put(parseReturnPair(jsonStr,0).first,"type:JsonObj")
         return myMap
+    }
+
+    override fun print(text:String) {
+        val parser:Parser=JsonParser()
+        val a = parser.parse(text)
+        a.forEach(){ (key,value) ->
+            if(key is JsonObj)
+                recursivePrintJsonTree(key)
+        }
+    }
+
+    override fun getResources(text: String, searchKey: String): List<String> {
+        val myDataStructure=parse(text).keys.first()
+        val returnList:MutableList<String> = mutableListOf()
+
+        fun recursiveSearch(root:JsonObj,){
+            root.jsonMap.forEach(){ (key,value) ->
+
+                when(value){
+                    is String -> {
+                        if(searchKey.toRegex().matches(value)){
+                            returnList.add(value)
+                        }
+                    }
+                    is JsonObj -> {
+                        recursiveSearch(value,)
+                    }
+                    is List<*> -> {
+                        for(it in value){
+                            when(it){
+                                is String -> {
+                                    if(searchKey.toRegex().matches(it)){
+                                        returnList.add(it)
+                                    }
+                                }
+                                is JsonObj -> {
+                                    recursiveSearch(it)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        recursiveSearch(myDataStructure as JsonObj)
+
+
+        return returnList
     }
 
 
@@ -96,12 +145,3 @@ class JsonParser() : Parser {
     }
 }
 
-
-fun printJsonFromString(text:String){
-    val parser:Parser=JsonParser()
-    val a = parser.parse(text)
-    a.forEach(){ (key,value) ->
-        if(key is JsonObj)
-            recursivePrintJsonTree(key)
-    }
-}
