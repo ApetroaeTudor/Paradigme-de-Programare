@@ -17,3 +17,5 @@
 **Ex2** - Kotlin + epublib-core + JSoup: Deschiderea unui epub si prelucrarea textului din el. Folosind regex se elimina/modifica anumite elemente<br> 
 **Ex3** - Kotlin + JSoup: Accesarea unui url. Cu un get request se obtin datele. Se face un arbore cu linkurile care pastreaza acelasi base url<br>
 
+## Lab4
+**LabEx** - Kotlin + JSoup + kotlinx-serialization-json: Accesarea si printarea in mai multe feluri a unei biblioteci de carti. Se respecta principiile Single Responsability, Interface segregation si Open/Closed. Se da print la datele despre carti in 3 feluri: Html, Json si .txt<br>
