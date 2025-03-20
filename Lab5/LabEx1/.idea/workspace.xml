@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7255c1f5-271a-45dc-af7d-713d8197b6f7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/PycharmCodes.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EventHandlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/EventHandlers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LabEx1.py" beforeDir="false" afterPath="$PROJECT_DIR$/LabEx1.py" afterDir="false" />
-    </list>
+    <list default="true" id="7255c1f5-271a-45dc-af7d-713d8197b6f7" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
