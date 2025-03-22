@@ -1,7 +1,10 @@
+import Dimensions
+from multiprocessing import Process,Queue
+
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QMainWindow, QLabel, QVBoxLayout, QHBoxLayout, \
     QLineEdit, QTextEdit
-from PyQt5.QtCore import Qt, QSize, QPropertyAnimation, QRect
+from PyQt5.QtCore import Qt, QSize, QPropertyAnimation, QRect, QPoint, QTimer, QEvent
 
 import Dimensions as dim
 import Functions as fn
@@ -26,6 +29,11 @@ class MainWindow(QMainWindow):
 
     myBridgeHBoxLayout:QHBoxLayout
     myRightPanel:QLabel
+    rightPanelDocked:QRect
+    rightPanelVisible:QRect
+
+
+    myTimer:QTimer
 
     def __init__(self):
         super().__init__()
@@ -35,10 +43,8 @@ class MainWindow(QMainWindow):
         #BUTTONS
         self.myLoadButton=QPushButton("Load")
         self.myLoadButton.setFixedSize(QSize(dim.STD_BUTTON_WIDTH,dim.STD_BUTTON_HEIGHT))
-        self.myLoadButton.clicked.connect(lambda: fn.animateRightPanel(self.myRightPanel,self.myRightPanel.geometry(),QRect(self.myRightPanel.geometry().x(),
-                                                                                                                            self.myRightPanel.geometry().y(),
-                                                                                                                            self.myRightPanel.width(),
-                                                                                                                            self.myRightPanel.height())))
+
+        self.myLoadButton.clicked.connect(lambda: Process(fn.pushMessageToAsyncQueue(dim.asyncQueue,"summonRightPanel")).start())
 
         self.mySaveButton=QPushButton("Save")
         self.mySaveButton.setFixedSize(QSize(dim.STD_BUTTON_WIDTH,dim.STD_BUTTON_HEIGHT))
@@ -80,25 +86,28 @@ class MainWindow(QMainWindow):
         self.myRightPanel.setFixedSize(QSize(dim.RIGHT_PANEL_WIDTH,dim.RIGHT_PANEL_HEIGHT))
         self.myRightPanel.setPixmap(QPixmap("res/RightPanel.png"))
         self.myRightPanel.setScaledContents(True)
-        self.myRightPanel.setParent(self)
-        self.myRightPanel.move(100,100)
-        self.myRightPanel.raise_()
-        self.myRightPanel.show()
+        self.myRightPanel.setParent(self.myMainWidget)
+        self.myRightPanel.move(300,0)
+        self.rightPanelDocked = self.myRightPanel.geometry()
+        self.rightPanelVisible = QRect(self.myRightPanel.geometry().x() - 300, self.myRightPanel.geometry().y(), self.myRightPanel.width(), self.myRightPanel.height())
+        self.isRightPanelVisible=[]
+        self.myRightPanel.installEventFilter(self)
+
+        #Test widget
+        self.randomLabel=QLabel()
+        self.randomLabel.setText("hello")
+        self.randomLabel.setFixedSize(QSize(300,300))
+        self.randomLabel.move(QPoint(100,100))
 
 
         #RIGHT VBOX
         self.myRightVBoxLayout=QVBoxLayout()
-        #self.myRightVBoxLayout.insertSpacing(0,-dim.LARGE_SPACE) #urc right panel label
-        #self.myRightVBoxLayout.insertWidget(1,self.myRightPanel)
 
 
         # BRIDGE HBOX
         self.myBridgeHBoxLayout = QHBoxLayout()
         self.myBridgeHBoxLayout.insertSpacing(0,dim.LARGE_SPACE)
         self.myBridgeHBoxLayout.insertLayout(2,self.myRightVBoxLayout)
-
-
-
 
 
         #LEFT VBOX LAYOUT -- MAIN LAYOUT
@@ -119,10 +128,29 @@ class MainWindow(QMainWindow):
         #UNITE ALL LAYOUTS
         self.myMainWidget.setLayout(self.myLeftVBoxLayout)
 
+        #TIMER
+        self.myTimer=QTimer()
+        self.myTimer.timeout.connect(self.processQueue)
+        self.myTimer.start(10)
 
         self.setCentralWidget(self.myMainWidget)
 
+    def processQueue(self):
+        try:
+            result=Dimensions.asyncQueue.get_nowait()
+            if result == "summonRightPanel":
+                fn.moveRightPanel(self.myRightPanel, startPos=self.rightPanelDocked, endPos=self.rightPanelVisible,showFlag=True)
+                return
+            if result == "hideRightPanel":
+                fn.moveRightPanel(self.myRightPanel, startPos=self.rightPanelDocked, endPos=self.rightPanelVisible,showFlag=False)
+        except:
+            pass
 
+    def eventFilter(self, obj,event):
+        if obj==self.myRightPanel and event.type()==QEvent.FocusOut:
+            myProcess=Process(fn.pushMessageToAsyncQueue(dim.asyncQueue,"hideRightPanel"))
+            myProcess.start()
+        return super().eventFilter(obj,event)
 
 
 if __name__=="__main__":

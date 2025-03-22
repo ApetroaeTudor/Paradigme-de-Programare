@@ -1,19 +1,27 @@
+from multiprocessing import Process,Queue
+
 from PyQt5.QtCore import QRect
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtCore import Qt, QSize, QPropertyAnimation
-import multiprocessing as mp
+import Dimensions as dim
+
+def pushMessageToAsyncQueue(q:Queue,msg:str):
+    q.put(msg)
 
 
-def animateRightPanel(myRightPanel:QLabel,startPos:QRect,endPos:QRect):
-    #def executeAsync(myRightPanel:QLabel,startPos:QRect,endPos:QRect):
-    myAni=QPropertyAnimation(myRightPanel,b"geometry")
-    myAni.setDuration(500)
-    myAni.setTargetObject(myRightPanel)
+def moveRightPanel(myRightPanel:QLabel,startPos:QRect,endPos:QRect,showFlag:bool):
+    myAni = QPropertyAnimation(myRightPanel, b"geometry")
+    myAni.setDuration(100)
+    myRightPanel.animation = myAni
 
-    myAni.setStartValue(startPos)
-    myAni.setEndValue(endPos)
-    myAni.start()
-    print("ani started")
+    if showFlag==True:
+        myRightPanel.setFocus()
+        myAni.setStartValue(startPos)
+        myAni.setEndValue(endPos)
+        myRightPanel.animation.start()
+    else:
+        myAni.setStartValue(endPos)
+        myAni.setEndValue(startPos)
+        myRightPanel.animation.start()
 
-    #myProcess=mp.Process(target=lambda: executeAsync(myRightPanel,startPos,endPos))
-    #myProcess.start()
+
