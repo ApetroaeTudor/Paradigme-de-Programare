@@ -16,30 +16,6 @@ from Functions import initButtons
 
 
 class MainWindow(QMainWindow):
-    myMainWidget:QLabel
-    myTitleLabel:QLabel
-    myLeftVBoxLayout:QVBoxLayout
-    myLeftHBoxLayout1:QHBoxLayout
-    myLeftHBoxLayout2:QHBoxLayout
-    myLoadButton:QPushButton
-    mySaveButton:QPushButton
-
-    myDeleteButton:QPushButton
-    myHBoxForDelete:QHBoxLayout
-
-    myRightVBoxLayout:QVBoxLayout
-
-    myTitleTextbox:QTextEdit
-    myBodyTextbox:QTextEdit
-
-    myBridgeHBoxLayout:QHBoxLayout
-    myRightPanel:QLabel
-    rightPanelDocked:QRect
-    rightPanelVisible:QRect
-
-    myNoEntriesLabel:QLabel
-
-    myErrorLabel:QLabel
 
     showFlag=False
 
@@ -61,7 +37,7 @@ class MainWindow(QMainWindow):
 
         self.mySaveButton=QPushButton("Save")
         self.mySaveButton.setFixedSize(QSize(dim.STD_BUTTON_WIDTH,dim.STD_BUTTON_HEIGHT))
-        # self.mySaveButton.clicked.connect(lambda: fn.processSaveInput(self,self.myTitleTextbox,self.myBodyTextbox,self.myErrorLabel,self.generalPurposeTimer))
+        self.mySaveButton.clicked.connect(lambda: fn.processSaveInput(self,self.myTitleTextbox,self.myErrorLabel,self.myBodyTextbox,self.generalPurposeTimer))
 
         self.myDeleteButton=QPushButton("Delete")
         self.myDeleteButton.setFixedSize(QSize(self.myLoadButton.size().width()*2+dim.LARGE_UI_GAP,dim.STD_BUTTON_HEIGHT))
@@ -74,6 +50,9 @@ class MainWindow(QMainWindow):
         self.myTitleTextbox.setReadOnly(True)
         self.myTitleTextbox.setText(fio.getRandomLineFromFile("TextFiles/Citate.txt"))
 
+
+
+
         #BODY TEXTBOX
         self.myBodyTextbox=QTextEdit()
         self.myBodyTextbox.setFixedSize(QSize(self.myTitleTextbox.size().width(),dim.BODY_TEXTBOX_HEIGHT))
@@ -81,13 +60,78 @@ class MainWindow(QMainWindow):
 
         #SET IMAGE
         self.myMainWidget=QLabel()
+        self.myMainWidget.setFixedSize(dim.WINDOW_WIDTH,dim.WINDOW_HEIGHT)
         self.myMainWidget.setPixmap(QPixmap("res/w95.jpeg"))
         self.myMainWidget.setScaledContents(True)
+
+        # REFRESH BTN
+        self.myRefreshButton = QPushButton("R")
+        self.myRefreshButton.setFixedSize(QSize(dim.LARGE_UI_GAP, dim.LARGE_UI_GAP))
+        self.myRefreshButton.setParent(self.myMainWidget)
+        self.myRefreshButton.move(380,197)
+        self.myRefreshButton.clicked.connect(lambda: self.myTitleTextbox.setText(fio.getRandomLineFromFile("TextFiles/Citate.txt")))
+
+
+
+
+
+        # BUTON PT ADAUGARE CITATE
+        self.myAddButton=QPushButton("+")
+        self.myAddButton.setFixedSize(QSize(dim.LARGE_UI_GAP, dim.LARGE_UI_GAP))
+        self.myAddButton.setParent(self.myMainWidget)
+        self.myAddButton.move(430,197)
+
+        self.secondaryWindow=QMainWindow()
+        self.secondaryWindow.setWindowTitle("Add a Quote")
+        self.secondaryVBoxLayout=QVBoxLayout()
+
+        self.secondaryWindow.setFixedSize(QSize(500,400))
+
+        self.secondaryAddButton=QPushButton()
+        self.secondaryAddButton.setFixedSize(QSize(dim.LARGE_UI_GAP,dim.LARGE_UI_GAP))
+        self.secondaryAddButton.setText("+")
+        self.secondaryAddButton.clicked.connect(lambda: fn.processPlusFromSecondWindow(self.secondaryWindow,self.secondaryTextbox,self.myErrorLabel,self.generalPurposeTimer))
+
+        self.secondaryAddButtonHBoxLayout=QHBoxLayout()
+        self.secondaryAddButtonHBoxLayout.insertWidget(0,self.secondaryAddButton)
+        self.secondaryAddButtonHBoxLayout.setAlignment(Qt.AlignCenter)
+
+
+        self.secondaryTextbox=QTextEdit()
+        self.secondaryMainWidget=QWidget()
+        self.secondaryWindow.setCentralWidget(self.secondaryMainWidget)
+
+        self.secondaryHBoxLayout=QHBoxLayout()
+        self.secondaryHBoxLayout.insertWidget(0,self.secondaryTextbox)
+        self.secondaryHBoxLayout.setAlignment(Qt.AlignCenter)
+
+        self.secondaryVBoxLayout.insertLayout(0,self.secondaryHBoxLayout)
+        self.secondaryVBoxLayout.insertLayout(1,self.secondaryAddButtonHBoxLayout)
+        self.secondaryVBoxLayout.insertStretch(2)
+
+
+        self.secondaryMainWidget.setLayout(self.secondaryVBoxLayout)
+
+        self.secondaryTextbox.setFixedSize(QSize(450, 300))
+
+
+        self.myAddButton.clicked.connect(lambda: self.secondaryWindow.show())
+
+
+
+
+
+
+
 
 
         #TEXT LABELS
         self.myTitleLabel=QLabel()
         self.myTitleLabel.setText("myJournal")
+        self.myTitleLabel.setFixedSize(QSize(320,30))
+        self.myTitleLabel.setStyleSheet("background-color: rgba(128, 0, 128, 0.45); color: white;")
+        self.myTitleLabel.setAlignment(Qt.AlignCenter)
+        self.myTitleLabel.setFont(QFont("Helvetica",15,QFont.Bold))
 
         #ERROR LABEL
         self.myErrorLabel=QLabel()
@@ -128,6 +172,7 @@ class MainWindow(QMainWindow):
         #1. NO ENTRIES MESSAGE
         self.myNoEntriesLabel=QLabel()
         self.myNoEntriesLabel.setText("No entries")
+        self.myNoEntriesLabel.setStyleSheet("color: rgba(255, 255, 255, 192);")
         if fio.getNrOfEntries("TextFiles/Entries")==0:
             self.myNoEntriesLabel.show()
         self.myNoEntriesLabel.setFont(QFont("Helvetica",dim.LARGE_FONT_SIZE))
@@ -140,19 +185,9 @@ class MainWindow(QMainWindow):
             self.myRightPanel.setLayout(myPackedResults[0])
             self.rightPanelBtnList=myPackedResults[1]
 
-        #RIGHT VBOX
-        self.myRightVBoxLayout=QVBoxLayout()
-
-
-        # BRIDGE HBOX
-        self.myBridgeHBoxLayout = QHBoxLayout()
-        self.myBridgeHBoxLayout.insertSpacing(0,dim.LARGE_SPACE)
-        self.myBridgeHBoxLayout.insertLayout(2,self.myRightVBoxLayout)
-
-
         #LEFT VBOX LAYOUT -- MAIN LAYOUT
         self.myLeftVBoxLayout=QVBoxLayout()
-        self.myLeftVBoxLayout.insertSpacing(0,dim.LARGE_UI_GAP)
+        self.myLeftVBoxLayout.insertSpacing(0,dim.LARGE_UI_GAP-20)
         self.myLeftVBoxLayout.insertLayout(1,self.myLeftHBoxLayout1)
         self.myLeftVBoxLayout.insertSpacing(2,dim.LARGE_UI_GAP)
         self.myLeftVBoxLayout.insertLayout(3,self.myLeftHBoxLayout2)
@@ -162,9 +197,7 @@ class MainWindow(QMainWindow):
         self.myLeftVBoxLayout.insertLayout(7,self.myHBoxForDelete)
         self.myLeftVBoxLayout.insertStretch(8)
 
-        self.myLeftVBoxLayout.insertLayout(8,self.myBridgeHBoxLayout)
         self.myLeftVBoxLayout.setContentsMargins(dim.LARGE_UI_GAP,0,0,0)
-
 
         #UNITE ALL LAYOUTS
         self.myMainWidget.setLayout(self.myLeftVBoxLayout)
@@ -192,9 +225,9 @@ class MainWindow(QMainWindow):
                 if self.showFlag == True:
                     fn.moveRightPanel(self.myRightPanel, startPos=self.rightPanelDocked, endPos=self.rightPanelVisible,showFlag=False)
                     self.showFlag=False
-            if str(result).split(".")[0]=="Error":
-                if str(result).split(".")[1]=="Delete":
-                    fn.SetErrorLabel(self.myLeftVBoxLayout,self.myErrorLabel,str(result).split(".")[2])
+            # if str(result).split(".")[0]=="Error":
+            #     if str(result).split(".")[1]=="Delete":
+            #         fn.SetErrorLabel(self.myLeftVBoxLayout,self.myErrorLabel,str(result).split(".")[2])
         except:
             pass
 

@@ -11,6 +11,7 @@ import Dimensions as dim
 import FileIO as fio
 
 from pathlib import Path
+import time
 
 import subprocess
 
@@ -67,7 +68,7 @@ def initButtons(parentWidget:QLabel,nrOfEntries:int):
 
         myEntryTitle=allMyEntryNames.pop(0)
         myEntryTitleLabel=QLabel()
-        myEntryTitleLabel.setFixedSize(QSize(100,30))
+        myEntryTitleLabel.setFixedSize(QSize(200,30))
         myEntryTitleLabel.setText(myEntryTitle)
 
 
@@ -104,21 +105,25 @@ def checkIfAnyButtonHasFocus(btnList:list):
         return True
     return False
 
+
+def setErrorLabel(myRootWidget:QWidget,myErrorLabel:QLabel,myErrorText:str,posX:int,posY:int,myTimer:QTimer):
+    myErrorLabel.setText(myErrorText)
+    myErrorLabel.setAlignment(Qt.AlignCenter)
+    myErrorLabel.setFixedSize(QSize(dim.STD_BUTTON_WIDTH, int(dim.STD_BUTTON_HEIGHT / 2)))
+    myErrorLabel.setStyleSheet("background-color : red; color : white;")
+    myErrorLabel.setParent(myRootWidget)
+    myErrorLabel.move(posX,posY)
+    myErrorLabel.show()
+    myTimer.timeout.connect(lambda: myErrorLabel.hide())
+    myTimer.start(1000)
+
 def processDeleteInput(myRootWidget:QWidget,myTitleTextBox:QTextEdit,myErrorLabel:QLabel,myBodyTextBox:QTextEdit, myTimer:QTimer):
     titleText=myTitleTextBox.toPlainText()
     if titleText[0]=='"':
-        myErrorLabel.setText("Nothing To Delete")
-        myErrorLabel.setAlignment(Qt.AlignCenter)
-        myErrorLabel.setFixedSize(QSize(dim.STD_BUTTON_WIDTH,int(dim.STD_BUTTON_HEIGHT/2) ))
-        myErrorLabel.setStyleSheet("background-color : red; color : white;")
-        myErrorLabel.setParent(myRootWidget)
-        myErrorLabel.move(130,int(dim.WINDOW_HEIGHT*0.95) )
-        myErrorLabel.show()
-        myTimer.timeout.connect(lambda: myErrorLabel.hide())
-        myTimer.start(1000)
+        setErrorLabel(myRootWidget,myErrorLabel,"Nothing to Delete",130,int(dim.WINDOW_HEIGHT*0.95),myTimer)
     else:
         for file in os.listdir("TextFiles/Entries"):
-            if titleText==file.title().lower():
+            if titleText==file.title():
                 filePath=Path("TextFiles/Entries/"+titleText)
                 if filePath.exists():
                     myTitleTextBox.clear()
@@ -127,3 +132,28 @@ def processDeleteInput(myRootWidget:QWidget,myTitleTextBox:QTextEdit,myErrorLabe
                     subprocess.Popen([sys.executable] + sys.argv)
                     QApplication.exit(0)
 
+
+def processSaveInput(myRootWidget:QWidget,myTitleTextBox:QTextEdit,myErrorLabel:QLabel,myBodyTextBox:QTextEdit, myTimer:QTimer):
+    timestamp=time.time()
+    readableTimestamp=time.ctime(timestamp)
+    bodyContent=myBodyTextBox.toPlainText()
+    if not bodyContent:
+        setErrorLabel(myRootWidget,myErrorLabel,"Nothing to Save",130,int(dim.WINDOW_HEIGHT*0.95),myTimer)
+
+    else:
+        with open(f"TextFiles/Entries/{readableTimestamp}","w") as file:
+            file.write(bodyContent)
+            subprocess.Popen([sys.executable] + sys.argv)
+            QApplication.exit(0)
+
+def processPlusFromSecondWindow(mySecondaryWindow:QMainWindow,mySecondaryTextbox:QTextEdit,myErrorLabel:QLabel,myTimer:QTimer):
+    content=mySecondaryTextbox.toPlainText()
+    if not content:
+        setErrorLabel(mySecondaryWindow,myErrorLabel,"Nothing To Add",180,360,myTimer)
+        return
+    if not content[0] or not content[len(content)-1]=='"':
+        setErrorLabel(mySecondaryWindow,myErrorLabel,'use quotes',180,360,myTimer)
+        return
+    fio.writeContentToCitate(content)
+    mySecondaryTextbox.clear()
+    mySecondaryWindow.hide()

@@ -23,3 +23,7 @@ def readContentFromFile(fileTitle:str)->str:
     with open(filePath,"r") as myFile:
         myContent=myContent+myFile.read()
     return myContent
+
+def writeContentToCitate(Content:str):
+    with open("TextFiles/Citate.txt","a") as file:
+        file.write("\n"+Content)
