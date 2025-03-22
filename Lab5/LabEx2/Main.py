@@ -12,6 +12,7 @@ import FileIO as fio
 
 import sys
 
+from Functions import initButtons
 
 
 class MainWindow(QMainWindow):
@@ -22,6 +23,9 @@ class MainWindow(QMainWindow):
     myLeftHBoxLayout2:QHBoxLayout
     myLoadButton:QPushButton
     mySaveButton:QPushButton
+
+    myDeleteButton:QPushButton
+    myHBoxForDelete:QHBoxLayout
 
     myRightVBoxLayout:QVBoxLayout
 
@@ -35,6 +39,8 @@ class MainWindow(QMainWindow):
 
     myNoEntriesLabel:QLabel
 
+    myErrorLabel:QLabel
+
     showFlag=False
 
 
@@ -42,6 +48,8 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.generalPurposeTimer=QTimer()
+
         self.setFixedSize(QSize(dim.WINDOW_WIDTH,dim.WINDOW_HEIGHT))
         self.setWindowTitle("MyJournal")
 
@@ -53,6 +61,11 @@ class MainWindow(QMainWindow):
 
         self.mySaveButton=QPushButton("Save")
         self.mySaveButton.setFixedSize(QSize(dim.STD_BUTTON_WIDTH,dim.STD_BUTTON_HEIGHT))
+        # self.mySaveButton.clicked.connect(lambda: fn.processSaveInput(self,self.myTitleTextbox,self.myBodyTextbox,self.myErrorLabel,self.generalPurposeTimer))
+
+        self.myDeleteButton=QPushButton("Delete")
+        self.myDeleteButton.setFixedSize(QSize(self.myLoadButton.size().width()*2+dim.LARGE_UI_GAP,dim.STD_BUTTON_HEIGHT))
+        self.myDeleteButton.clicked.connect(lambda: fn.processDeleteInput(self,self.myTitleTextbox,self.myErrorLabel,self.myBodyTextbox,self.generalPurposeTimer))
 
         #TITLE TEXTBOX
         self.myTitleTextbox=QTextEdit()
@@ -76,6 +89,10 @@ class MainWindow(QMainWindow):
         self.myTitleLabel=QLabel()
         self.myTitleLabel.setText("myJournal")
 
+        #ERROR LABEL
+        self.myErrorLabel=QLabel()
+
+
         #HBOX FOR TITLE
         self.myLeftHBoxLayout1=QHBoxLayout()
         self.myLeftHBoxLayout1.insertWidget(0,self.myTitleLabel)
@@ -87,6 +104,11 @@ class MainWindow(QMainWindow):
         self.myLeftHBoxLayout2.insertSpacing(1,dim.LARGE_UI_GAP)
         self.myLeftHBoxLayout2.insertWidget(2,self.mySaveButton)
         self.myLeftHBoxLayout2.insertStretch(3)
+
+        #HBOX FOR DELETE
+        self.myHBoxForDelete=QHBoxLayout()
+        self.myHBoxForDelete.insertWidget(1,self.myDeleteButton)
+        self.myHBoxForDelete.insertStretch(2)
 
 
         #RIGHT PANEL
@@ -105,8 +127,9 @@ class MainWindow(QMainWindow):
         #RIGHT PANEL CONTENTS:
         #1. NO ENTRIES MESSAGE
         self.myNoEntriesLabel=QLabel()
+        self.myNoEntriesLabel.setText("No entries")
         if fio.getNrOfEntries("TextFiles/Entries")==0:
-            self.myNoEntriesLabel.setText("No entries")
+            self.myNoEntriesLabel.show()
         self.myNoEntriesLabel.setFont(QFont("Helvetica",dim.LARGE_FONT_SIZE))
         self.myNoEntriesLabel.setParent(self.myRightPanel)
         self.myNoEntriesLabel.move(90,50)
@@ -136,7 +159,8 @@ class MainWindow(QMainWindow):
         self.myLeftVBoxLayout.insertSpacing(4,dim.LARGE_UI_GAP)
         self.myLeftVBoxLayout.insertWidget(5,self.myTitleTextbox)
         self.myLeftVBoxLayout.insertWidget(6,self.myBodyTextbox)
-        self.myLeftVBoxLayout.insertStretch(7)
+        self.myLeftVBoxLayout.insertLayout(7,self.myHBoxForDelete)
+        self.myLeftVBoxLayout.insertStretch(8)
 
         self.myLeftVBoxLayout.insertLayout(8,self.myBridgeHBoxLayout)
         self.myLeftVBoxLayout.setContentsMargins(dim.LARGE_UI_GAP,0,0,0)
@@ -168,11 +192,19 @@ class MainWindow(QMainWindow):
                 if self.showFlag == True:
                     fn.moveRightPanel(self.myRightPanel, startPos=self.rightPanelDocked, endPos=self.rightPanelVisible,showFlag=False)
                     self.showFlag=False
+            if str(result).split(".")[0]=="Error":
+                if str(result).split(".")[1]=="Delete":
+                    fn.SetErrorLabel(self.myLeftVBoxLayout,self.myErrorLabel,str(result).split(".")[2])
         except:
             pass
 
     def updateUI(self):
-        fn.linkBtnConnectsToEntries(self.rightPanelBtnList,self.myBodyTextbox,self.myTitleTextbox,fio.getAllEntryNames("TextFiles/Entries"))
+        if not fio.getNrOfEntries("TextFiles/Entries") == 0:
+            self.myNoEntriesLabel.hide()
+            fn.linkBtnConnectsToEntries(self.myRightPanel,self.rightPanelBtnList,self.myBodyTextbox,self.myTitleTextbox,fio.getAllEntryNames("TextFiles/Entries"))
+        else:
+            self.myNoEntriesLabel.show()
+
 
     def eventFilter(self, obj, event):
         if event.type() == QEvent.MouseButtonPress:

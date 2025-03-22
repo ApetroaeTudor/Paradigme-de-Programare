@@ -1,12 +1,18 @@
+import os
+import sys
 from multiprocessing import Process,Queue
 from tkinter.constants import CENTER
 
-from PyQt5.QtCore import QRect
+from PyQt5.QtCore import QRect, QTimeZone, lowercasebase
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QLabel, QHBoxLayout, QPushButton, QVBoxLayout, QTextEdit
-from PyQt5.QtCore import Qt, QSize, QPropertyAnimation
+from PyQt5.QtWidgets import QLabel, QHBoxLayout, QPushButton, QVBoxLayout, QTextEdit, QWidget, QMainWindow, QApplication
+from PyQt5.QtCore import Qt, QSize, QPropertyAnimation, QTimer
 import Dimensions as dim
 import FileIO as fio
+
+from pathlib import Path
+
+import subprocess
 
 def pushMessageToAsyncQueue(q:Queue,msg:str):
     q.put(msg)
@@ -80,7 +86,7 @@ def initButtons(parentWidget:QLabel,nrOfEntries:int):
 
 
 
-def linkBtnConnectsToEntries(btnList:list[QPushButton],myTextEdit:QTextEdit,myTitleTextEdit:QTextEdit,fileTitles:list[str]):
+def linkBtnConnectsToEntries(ownerPanel:QMainWindow,btnList:list[QPushButton],myTextEdit:QTextEdit,myTitleTextEdit:QTextEdit,fileTitles:list[str]):
     def loadFileContent(fileTitle: str):
         content = fio.readContentFromFile(fileTitle)
         myTextEdit.setText(content)
@@ -89,6 +95,7 @@ def linkBtnConnectsToEntries(btnList:list[QPushButton],myTextEdit:QTextEdit,myTi
         myTitleTextEdit.setFont(QFont("Helvetica",20,QFont.Bold))
 
     for btn, currentTitle in zip(btnList, fileTitles):
+        btn.setParent(ownerPanel)
         btn.clicked.connect(lambda _, title=currentTitle: loadFileContent(title))
 
 
@@ -96,3 +103,27 @@ def checkIfAnyButtonHasFocus(btnList:list):
     if any(btn.hasFocus() for btn in btnList):
         return True
     return False
+
+def processDeleteInput(myRootWidget:QWidget,myTitleTextBox:QTextEdit,myErrorLabel:QLabel,myBodyTextBox:QTextEdit, myTimer:QTimer):
+    titleText=myTitleTextBox.toPlainText()
+    if titleText[0]=='"':
+        myErrorLabel.setText("Nothing To Delete")
+        myErrorLabel.setAlignment(Qt.AlignCenter)
+        myErrorLabel.setFixedSize(QSize(dim.STD_BUTTON_WIDTH,int(dim.STD_BUTTON_HEIGHT/2) ))
+        myErrorLabel.setStyleSheet("background-color : red; color : white;")
+        myErrorLabel.setParent(myRootWidget)
+        myErrorLabel.move(130,int(dim.WINDOW_HEIGHT*0.95) )
+        myErrorLabel.show()
+        myTimer.timeout.connect(lambda: myErrorLabel.hide())
+        myTimer.start(1000)
+    else:
+        for file in os.listdir("TextFiles/Entries"):
+            if titleText==file.title().lower():
+                filePath=Path("TextFiles/Entries/"+titleText)
+                if filePath.exists():
+                    myTitleTextBox.clear()
+                    myBodyTextBox.clear()
+                    filePath.unlink()
+                    subprocess.Popen([sys.executable] + sys.argv)
+                    QApplication.exit(0)
+
