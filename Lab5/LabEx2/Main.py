@@ -1,13 +1,14 @@
 import Dimensions
 from multiprocessing import Process,Queue
 
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QMainWindow, QLabel, QVBoxLayout, QHBoxLayout, \
     QLineEdit, QTextEdit
 from PyQt5.QtCore import Qt, QSize, QPropertyAnimation, QRect, QPoint, QTimer, QEvent
 
 import Dimensions as dim
 import Functions as fn
+import FileIO as fio
 
 import sys
 
@@ -24,13 +25,17 @@ class MainWindow(QMainWindow):
 
     myRightVBoxLayout:QVBoxLayout
 
-    myTitleTextbox:QLineEdit
+    myTitleTextbox:QTextEdit
     myBodyTextbox:QTextEdit
 
     myBridgeHBoxLayout:QHBoxLayout
     myRightPanel:QLabel
     rightPanelDocked:QRect
     rightPanelVisible:QRect
+
+    myNoEntriesLabel:QLabel
+
+    showFlag=False
 
 
     myTimer:QTimer
@@ -50,8 +55,11 @@ class MainWindow(QMainWindow):
         self.mySaveButton.setFixedSize(QSize(dim.STD_BUTTON_WIDTH,dim.STD_BUTTON_HEIGHT))
 
         #TITLE TEXTBOX
-        self.myTitleTextbox=QLineEdit()
+        self.myTitleTextbox=QTextEdit()
         self.myTitleTextbox.setFixedSize(QSize(self.myLoadButton.size().width()*2+dim.LARGE_UI_GAP,dim.TITLE_BOX_HEIGHT))
+        self.myTitleTextbox.setFont(QFont("Helvetica",10))
+        self.myTitleTextbox.setReadOnly(True)
+        self.myTitleTextbox.setText(fio.getRandomLineFromFile("TextFiles/Citate.txt"))
 
         #BODY TEXTBOX
         self.myBodyTextbox=QTextEdit()
@@ -87,18 +95,27 @@ class MainWindow(QMainWindow):
         self.myRightPanel.setPixmap(QPixmap("res/RightPanel.png"))
         self.myRightPanel.setScaledContents(True)
         self.myRightPanel.setParent(self.myMainWidget)
-        self.myRightPanel.move(300,0)
+        self.myRightPanel.move(dim.WINDOW_WIDTH,0)
         self.rightPanelDocked = self.myRightPanel.geometry()
-        self.rightPanelVisible = QRect(self.myRightPanel.geometry().x() - 300, self.myRightPanel.geometry().y(), self.myRightPanel.width(), self.myRightPanel.height())
+        self.rightPanelVisible = QRect(self.myRightPanel.geometry().x() - dim.RIGHT_PANEL_WIDTH, self.myRightPanel.geometry().y(), self.myRightPanel.width(), self.myRightPanel.height())
         self.isRightPanelVisible=[]
-        self.myRightPanel.installEventFilter(self)
+        QApplication.instance().installEventFilter(self)
 
-        #Test widget
-        self.randomLabel=QLabel()
-        self.randomLabel.setText("hello")
-        self.randomLabel.setFixedSize(QSize(300,300))
-        self.randomLabel.move(QPoint(100,100))
 
+        #RIGHT PANEL CONTENTS:
+        #1. NO ENTRIES MESSAGE
+        self.myNoEntriesLabel=QLabel()
+        if fio.getNrOfEntries("TextFiles/Entries")==0:
+            self.myNoEntriesLabel.setText("No entries")
+        self.myNoEntriesLabel.setFont(QFont("Helvetica",dim.LARGE_FONT_SIZE))
+        self.myNoEntriesLabel.setParent(self.myRightPanel)
+        self.myNoEntriesLabel.move(90,50)
+
+        #2. ENTRIES LIST: EACH ENTRY WILL BE A LABEL WITH THE TITLE OF THE ENTRY + BUTTON TO LOAD (max 5 entries)
+        if not fio.getNrOfEntries("TextFiles/Entries")==0:
+            myPackedResults=fn.initButtons(self.myRightPanel,fio.getNrOfEntries("TextFiles/Entries"))
+            self.myRightPanel.setLayout(myPackedResults[0])
+            self.rightPanelBtnList=myPackedResults[1]
 
         #RIGHT VBOX
         self.myRightVBoxLayout=QVBoxLayout()
@@ -131,7 +148,11 @@ class MainWindow(QMainWindow):
         #TIMER
         self.myTimer=QTimer()
         self.myTimer.timeout.connect(self.processQueue)
-        self.myTimer.start(10)
+        self.myTimer.start(100)
+
+        self.mySlowTimer=QTimer()
+        self.mySlowTimer.timeout.connect(self.updateUI)
+        self.mySlowTimer.start(300)
 
         self.setCentralWidget(self.myMainWidget)
 
@@ -139,18 +160,26 @@ class MainWindow(QMainWindow):
         try:
             result=Dimensions.asyncQueue.get_nowait()
             if result == "summonRightPanel":
-                fn.moveRightPanel(self.myRightPanel, startPos=self.rightPanelDocked, endPos=self.rightPanelVisible,showFlag=True)
-                return
+                self.myRightPanel.setFocus()
+                if self.showFlag == False:
+                    fn.moveRightPanel(self.myRightPanel, startPos=self.rightPanelDocked, endPos=self.rightPanelVisible,showFlag=True)
+                    self.showFlag=True
             if result == "hideRightPanel":
-                fn.moveRightPanel(self.myRightPanel, startPos=self.rightPanelDocked, endPos=self.rightPanelVisible,showFlag=False)
+                if self.showFlag == True:
+                    fn.moveRightPanel(self.myRightPanel, startPos=self.rightPanelDocked, endPos=self.rightPanelVisible,showFlag=False)
+                    self.showFlag=False
         except:
             pass
 
-    def eventFilter(self, obj,event):
-        if obj==self.myRightPanel and event.type()==QEvent.FocusOut:
-            myProcess=Process(fn.pushMessageToAsyncQueue(dim.asyncQueue,"hideRightPanel"))
-            myProcess.start()
-        return super().eventFilter(obj,event)
+    def updateUI(self):
+        fn.linkBtnConnectsToEntries(self.rightPanelBtnList,self.myBodyTextbox,self.myTitleTextbox,fio.getAllEntryNames("TextFiles/Entries"))
+
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.MouseButtonPress:
+            if not self.myRightPanel.rect().contains(self.myRightPanel.mapFromGlobal(event.globalPos())) and not self.myLoadButton.rect().contains(self.myLoadButton.mapFromGlobal(event.globalPos())):
+                Process(fn.pushMessageToAsyncQueue(dim.asyncQueue,"hideRightPanel")).start()
+        return super().eventFilter(obj, event)
+
 
 
 if __name__=="__main__":
@@ -158,3 +187,4 @@ if __name__=="__main__":
     myWindow=MainWindow()
     myWindow.show()
     myApp.exec()
+
