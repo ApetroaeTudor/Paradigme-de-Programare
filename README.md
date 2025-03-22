@@ -22,3 +22,8 @@
 **Ex1** - Kotlin + JSoup + snakeyaml: WebCrawler, poate da parse la fisiere html,xml,yaml si json. Filtreaza datele parsate si stocheaza url-urile, pe care le viziteaza recursiv. Se pot adauga alte chei de cautare si datele se pot salva eventual intr-o baza de date(inca nu fac asta). Se poate alege adancimea crawl-ului.<br> 
 **Ex2** - Kotlin: Aplicatie simpla de achizitii/managing bilete. Respecta principiile SOLID. Diagrame UML(Clasa si UseCase) incluse.<br> 
 **Ex3** - Kotlin: Aplicatie NoteManager. Are un serviciu simplu de register-login, un meniu ce permite: crearea de note-uri, vizualizarea lor, modificarea si stergerea. Notitele sunt salvate pe disk. Schema UML.<br>
+
+## Lab5
+**LabEx1** - Python + tkinter: Aplicatie cu interfata grafica in care introduc niste numere si le filtrez intr-un camp text. Basic error handling<br>
+**LabEx2** - Python + PyQt5: Aplicatie jurnal cu interfata grafica. Acces la o baza de date, scriere si citire din ea.<br>
+
