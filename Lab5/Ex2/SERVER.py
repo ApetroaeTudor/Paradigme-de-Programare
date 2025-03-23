@@ -9,6 +9,8 @@ SERVER_game_engine = gm.MyGame()
 logInQueue = mp.Queue()
 movesQueue = mp.Queue()
 
+loggedUsersQueue = mp.Queue()
+
 
 class GeneralManager(BaseManager):
     pass
@@ -23,7 +25,9 @@ class LoginManager():
                 msg=logInQueue.get_nowait()
                 print(f"received msg:{msg}")
                 if str(msg).split(".")[0]=="LOGIN":
+                    SERVER_game_engine.incrementNrOfLoggedPlayers()
                     logInQueue.put(f"ASSIGN_PLAYER.{self.authenticationStatus}")
+                    loggedUsersQueue.put(str(msg).split(".")[1])
                     self.authenticationStatus+=1
                 else:
                     logInQueue.put(msg)
@@ -47,8 +51,9 @@ if __name__=="__main__":
     myGeneralManager=GeneralManager(address=('localhost',50000),authkey=b'123')
 
     GeneralManager.register('get_LoginQueue',callable=lambda: logInQueue)
-    GeneralManager.register('get_GameEngine',callable=lambda: SERVER_game_engine,exposed=['getGameState','checkCurrentState','getTurn','takeMoveFromPlayer','resetBoard'])
+    GeneralManager.register('get_GameEngine',callable=lambda: SERVER_game_engine,exposed=['getGameState','checkCurrentState','getTurn','takeMoveFromPlayer','resetBoard','getNrOfLoggedPlayers','incrementNrOfLoggedPlayers'])
     GeneralManager.register('get_MovesQueue',callable=lambda: movesQueue)
+    GeneralManager.register('get_LoggedUsersQueue',callable=lambda: loggedUsersQueue)
 
     server=myGeneralManager.get_server()
     server.serve_forever()

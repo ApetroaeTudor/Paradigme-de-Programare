@@ -78,6 +78,7 @@ class GameInterface(QMainWindow):
                 msg=self.loginQueue.get_nowait()
                 if str(msg).split(".")[0]=="ASSIGN_PLAYER":
                     self.playerNr=str(msg).split(".")[1]
+                    self.setWindowTitle("XO-Player"+str(self.playerNr))
                 else:
                     self.loginQueue.put(msg)
             except:
@@ -95,7 +96,6 @@ class GameInterface(QMainWindow):
             pass
 
     def updateUI(self):
-        print(self.playerNr)
         for i in range(3):
             for j in range(3):
                 for btnList in self.myLabelGameFrame.myBtnList:
@@ -118,6 +118,9 @@ class GameInterface(QMainWindow):
         self.show()
     def toggleOff(self):
         self.hide()
+
+    def getEngine(self):
+        return self.myGameEngine
 
 
         

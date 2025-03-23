@@ -6,6 +6,7 @@ import DB_Manager as dbm
 
 import RegisterScreen as rs
 import LoginScreen as ls
+import WaitingForPlayersScreen as wfp
 
 from multiprocessing import Process,Queue
 
@@ -20,7 +21,7 @@ class WelcomeScreen(QMainWindow):
     myDBManager:dbm.DatabaseManager
     ERROR_QUEUE:Queue
 
-    def __init__(self,ERROR_QUEUE:Queue,LOGIN_QUEUE:Queue,game:interface.GameInterface):
+    def __init__(self,ERROR_QUEUE:Queue,LOGIN_QUEUE:Queue,LOGGED_USERS_QUEUE:Queue,game:interface.GameInterface):
         super().__init__()
 
         self.authDone=False
@@ -33,8 +34,9 @@ class WelcomeScreen(QMainWindow):
         self.LOGIN_QUEUE=LOGIN_QUEUE
         self.ERROR_QUEUE=ERROR_QUEUE
         self.myDBManager=dbm.DatabaseManager(self.ERROR_QUEUE)
-        self.myLoginScreen = ls.LoginScreen(self.myDBManager,ERROR_QUEUE)
+        self.myLoginScreen = ls.LoginScreen(self.myDBManager,ERROR_QUEUE,LOGGED_USERS_QUEUE)
         self.myRegisterScreen = rs.RegisterScreen(self.myDBManager,ERROR_QUEUE)
+        self.myWaitingForPlayersScreen = wfp.WaitingForPlayersWindow()
 
         #MAIN SETUP
         self.setWindowTitle("Log-in")
@@ -81,6 +83,11 @@ class WelcomeScreen(QMainWindow):
         self.myLoopTimer.start(1000)
 
 
+        #WAIT FOR GAME TIMER
+        self.myWaitForGameTimer=QTimer()
+        self.myWaitForGameTimer.timeout.connect(self.waitForMainGameLoop)
+
+
     def switchToRegister(self):
         self.toggleOff()
         self.myRegisterScreen.toggleOn()
@@ -108,11 +115,19 @@ class WelcomeScreen(QMainWindow):
             self.myUsername=self.myLoginScreen.getUsername()
 
         if self.authDone:
-            self.LOGIN_QUEUE.put("LOGIN.HELLO")
-            print("msg sent")
-            self.MAIN_GAME.toggleOn()
+            self.LOGIN_QUEUE.put(f"LOGIN.{self.myUsername}")
+            self.toggleOff()
+            self.myWaitingForPlayersScreen.toggleOn()
             self.myLoopTimer.stop()
+            self.myWaitForGameTimer.start(100)
 
+
+    def waitForMainGameLoop(self):
+        nrOfLoggedPlayers = self.MAIN_GAME.getEngine().getNrOfLoggedPlayers()
+        self.myWaitingForPlayersScreen.updateText(str(nrOfLoggedPlayers))
+        if nrOfLoggedPlayers == 2:
+            self.myWaitingForPlayersScreen.toggleOff()
+            self.MAIN_GAME.toggleOn()
 
     def getAuthStatus(self):
         return self.authDone

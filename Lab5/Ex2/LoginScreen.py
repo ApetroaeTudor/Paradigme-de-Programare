@@ -7,18 +7,19 @@ import sys
 import DB_Manager as dbm
 
 from multiprocessing import Process,Queue
+from queue import Empty
 
 
 class LoginScreen(QMainWindow):
     loginDone:bool
 
-    def __init__(self,DBM:dbm.DatabaseManager,ERQ:Queue):
+    def __init__(self,DBM:dbm.DatabaseManager,ERQ:Queue,LOGGED_USERS_QUEUE:Queue):
         super().__init__()
 
         self.loginDone=False
         self.myDBManager=DBM
         self.ERROR_QUEUE=ERQ
-
+        self.LOGGED_USERS_QUEUE=LOGGED_USERS_QUEUE
         self.myUsername=""
 
 
@@ -118,12 +119,32 @@ class LoginScreen(QMainWindow):
 
         try:
             username=self.myDBManager.getUsernameByPassword(str(myInput_Password))
-            if str(username)==myInput_Username:
+            if str(username)==myInput_Username and not self.checkIfIsLoggedInAlready(myInput_Username):
                 self.loginDone=True
                 self.myUsername = myInput_Username
         except:
             self.setErrorLabel("InvalidData",self.myErrorTimer)
 
+    def checkIfIsLoggedInAlready(self, input_User: str):
+        temp_list = []
+        user_found = False
+
+        while True:
+            try:
+                user = self.LOGGED_USERS_QUEUE.get_nowait()
+                temp_list.append(user)
+                if input_User == str(user):
+                    user_found = True
+            except Empty:
+                break
+
+        for user in temp_list:
+            self.LOGGED_USERS_QUEUE.put(user)
+
+        if user_found:
+            raise Exception("User Logged")
+
+        return False
 
     def getLoginStatus(self):
         return self.loginDone

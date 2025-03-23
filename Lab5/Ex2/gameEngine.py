@@ -7,7 +7,10 @@ class MyGame:
                   ["-","-","-"]]
     turn=0 #turn0 e player1=X, turn1 e player2=O
 
+
     def __init__(self):
+        self.nrOfLoggedPlayers = 0
+
         pass
 
     def resetBoard(self):
@@ -117,29 +120,8 @@ class MyGame:
     def getTurn(self):
         return self.turn
 
-#     def gameLoop(self):
-#         activeState=self.checkCurrentState()
-#         while activeState[0]==1:
-#             self.printBoard()
-#             while True:
-#                 try:
-#                     move=mq.asyncQueue.get_nowait()
-#                     row=int(str(move)[0])
-#                     col=int(str(move)[1])
-#                     if self.validateMove(row, col):
-#                         break
-#                 except:
-#                     pass
-#             self.takeMoveFromPlayer(row,col)
-#             activeState=self.checkCurrentState()
-#
-#         self.printBoard()
-#         if activeState[1]==0:
-#             print("X wins")
-#         elif activeState[1]==1:
-#             print("0 wins")
-#         elif activeState[1]==2:
-#             print("tie")
-#
-#
-# myXOgame=MyGame()
+    def getNrOfLoggedPlayers(self):
+        return self.nrOfLoggedPlayers
+
+    def incrementNrOfLoggedPlayers(self):
+        self.nrOfLoggedPlayers+=1
