@@ -41,12 +41,16 @@ class GameInterface(QMainWindow):
 
     playerNr=-1
 
+
+
     def __init__(self,game,loginQueue:Queue,movesQueue):
         super().__init__()
 
         self.myGameEngine=game
         self.loginQueue=loginQueue
         self.movesQueue=movesQueue
+
+        self.myUsername=""
 
         #SETUP MAIN WINDOW
         self.myBaseWidget=QWidget()
@@ -69,14 +73,16 @@ class GameInterface(QMainWindow):
 
 
     def processQueue(self):
-        try:
-            msg=self.loginQueue.get_nowait()
-            if str(msg).split(".")[0]=="ASSIGN_PLAYER":
-                self.playerNr=str(msg).split(".")[1]
-            else:
-                self.loginQueue.put(msg)
-        except:
-            pass
+        if self.playerNr==-1:
+            try:
+                msg=self.loginQueue.get_nowait()
+                if str(msg).split(".")[0]=="ASSIGN_PLAYER":
+                    self.playerNr=str(msg).split(".")[1]
+                else:
+                    self.loginQueue.put(msg)
+            except:
+                pass
+
         try:
             msg = self.movesQueue.get_nowait()
             if str(msg).split(".")[0]=="MOVE":
@@ -107,6 +113,11 @@ class GameInterface(QMainWindow):
                 print("O WINS")
             elif gamestate[1]==2:
                 print("TIE")
+
+    def toggleOn(self):
+        self.show()
+    def toggleOff(self):
+        self.hide()
 
 
         
