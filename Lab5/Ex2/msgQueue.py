@@ -4,3 +4,4 @@ def putMsgToQueue(msg:str,q:Queue):
     q.put(msg)
 
 asyncQueue=Queue()
+

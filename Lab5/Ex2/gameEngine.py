@@ -111,6 +111,12 @@ class MyGame:
             print(elem)
         print("\n")
 
+    def getGameState(self):
+        return self.currentState
+
+    def getTurn(self):
+        return self.turn
+
 #     def gameLoop(self):
 #         activeState=self.checkCurrentState()
 #         while activeState[0]==1:

@@ -8,6 +8,8 @@ import functions as fn
 
 import msgQueue as mq
 
+from multiprocessing import Process,Queue
+
 import sys
 
 
@@ -37,10 +39,14 @@ class GameLabel(QLabel):
 class GameInterface(QMainWindow):
     gameEngine:MyGame
 
-    def __init__(self):
+    playerNr=-1
+
+    def __init__(self,game,loginQueue:Queue,movesQueue):
         super().__init__()
 
-        self.gameEngine=MyGame()
+        self.myGameEngine=game
+        self.loginQueue=loginQueue
+        self.movesQueue=movesQueue
 
         #SETUP MAIN WINDOW
         self.myBaseWidget=QWidget()
@@ -52,7 +58,7 @@ class GameInterface(QMainWindow):
 
         #SETUP GAME
         self.myLabelGameFrame=GameLabel(self.myBaseWidget)
-        self.myLabelGameFrame.myBtnList=fn.initButtonsForGame(self.myLabelGameFrame,self.gameEngine.currentState,self)
+        self.myLabelGameFrame.myBtnList=fn.initButtonsForGame(self.myLabelGameFrame,self.myGameEngine.getGameState(),self)
 
 
         #TIMER FOR UPDATES
@@ -64,23 +70,35 @@ class GameInterface(QMainWindow):
 
     def processQueue(self):
         try:
-            move = mq.asyncQueue.get_nowait()
-            row = int(str(move)[0])
-            col = int(str(move)[1])
-            self.gameEngine.takeMoveFromPlayer(row,col)
+            msg=self.loginQueue.get_nowait()
+            if str(msg).split(".")[0]=="ASSIGN_PLAYER":
+                self.playerNr=str(msg).split(".")[1]
+            else:
+                self.loginQueue.put(msg)
+        except:
+            pass
+        try:
+            msg = self.movesQueue.get_nowait()
+            if str(msg).split(".")[0]=="MOVE":
+                move=str(msg).split(".")[1]
+                row = int(str(move)[0])
+                col = int(str(move)[1])
+                if int(self.playerNr)==int(self.myGameEngine.getTurn()):
+                    self.myGameEngine.takeMoveFromPlayer(row,col)
         except:
             pass
 
     def updateUI(self):
+        print(self.playerNr)
         for i in range(3):
             for j in range(3):
                 for btnList in self.myLabelGameFrame.myBtnList:
                     for btn in btnList:
                         if btn.correspondingPosition == f"{i}{j}":
-                            if not self.gameEngine.currentState[i][j] =='-':
-                                btn.updateBtnText(self.gameEngine.currentState[i][j])
+                            if not self.myGameEngine.getGameState()[i][j] =='-':
+                                btn.updateBtnText(self.myGameEngine.getGameState()[i][j])
 
-        gamestate=self.gameEngine.checkCurrentState()
+        gamestate=self.myGameEngine.checkCurrentState()
         if gamestate[0]==0:
             self.myUpdateTimer.stop()
             if gamestate[1]==0:
