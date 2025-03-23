@@ -38,7 +38,7 @@ if __name__=="__main__":
 
 
     clientApp=QApplication(sys.argv)
-    gameInterface=interface.GameInterface(GAME_ENGINE,LOGIN_QUEUE,MOVES_QUEUE)
+    gameInterface=interface.GameInterface(GAME_ENGINE,LOGIN_QUEUE,MOVES_QUEUE,LOGGED_USERS_QUEUE)
     clientWindow=ws.WelcomeScreen(ERROR_QUEUE,LOGIN_QUEUE,LOGGED_USERS_QUEUE,gameInterface)
     clientWindow.show()
     clientApp.exec()

@@ -28,7 +28,9 @@ class WaitingForPlayersWindow(QMainWindow):
         self.myShowNrOfPlayersLabel = QLabel()
         self.myShowNrOfPlayersLabel.setFixedSize(QSize(300, 200))
         self.myShowNrOfPlayersLabel.setParent(self.myMainWidget)
-        self.myShowNrOfPlayersLabel.setStyleSheet("background-color : rgba(255, 0, 0, 0.2); color: white ")
+        self.myShowNrOfPlayersLabel.setFont(QFont("Helvetica",25))
+        self.myShowNrOfPlayersLabel.setAlignment(Qt.AlignCenter)
+        self.myShowNrOfPlayersLabel.setStyleSheet("background-color : rgba(255, 0, 0, 0.2); color: white; border-radius: 5px;")
 
         self.myHBoxLayout1 = QHBoxLayout()
         self.myHBoxLayout2 = QHBoxLayout()

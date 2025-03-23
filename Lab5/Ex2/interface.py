@@ -1,3 +1,6 @@
+import subprocess
+
+from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtWidgets import QApplication,QPushButton,QLabel,QMainWindow,QWidget
 from PyQt5.QtCore import Qt, QSize, QPropertyAnimation, QRect, QPoint, QTimer, QEvent
 
@@ -16,6 +19,7 @@ import sys
 class GameButton(QPushButton):
     correspondingPosition:str
     btnText:str
+
     def __init__(self,position:str,width:int,height:int,parentWidget:QWidget,root:QMainWindow):
         super().__init__()
         self.correspondingPosition=position
@@ -32,7 +36,7 @@ class GameLabel(QLabel):
     def __init__(self,parentWidget:QWidget):
         super().__init__()
         self.setFixedSize(QSize(c.GAME_HEIGHT,c.GAME_WIDTH))
-        self.move(300,50)
+        self.move(50,50)
         self.setParent(parentWidget)
 
 
@@ -43,26 +47,54 @@ class GameInterface(QMainWindow):
 
 
 
-    def __init__(self,game,loginQueue:Queue,movesQueue):
+    def __init__(self,game,loginQueue:Queue,movesQueue:Queue,loggedUsersQueue:Queue):
         super().__init__()
 
+        self.loggedUsersQueue=loggedUsersQueue
         self.myGameEngine=game
         self.loginQueue=loginQueue
         self.movesQueue=movesQueue
 
         self.myUsername=""
 
+
         #SETUP MAIN WINDOW
         self.myBaseWidget=QWidget()
+        self.myBaseWidget.setStyleSheet("background: #2e2e2e")
         self.myBaseWidget.setFixedSize(QSize(c.WINDOW_WIDTH,c.WINDOW_HEIGHT))
         self.setWindowTitle("XO")
         self.setCentralWidget(self.myBaseWidget)
         self.myBaseWidget.setParent(self)
 
 
+        #LOGO
+        self.myLogoLabel=QLabel()
+        self.myLogoLabel.setFixedSize(QSize(500,100))
+        self.myLogoLabel.setPixmap(QPixmap("res/TicTacToe.png"))
+        self.myLogoLabel.setScaledContents(True)
+        self.myLogoLabel.setParent(self.myBaseWidget)
+        self.myLogoLabel.move(850,100)
+
+        # #MY NAME LABEL
+        self.myNameLabel = QLabel()
+        self.myNameLabel.setStyleSheet("color: white")
+        self.myNameLabel.setFont(QFont("Helvetica", 20))
+        self.myNameLabel.setFixedSize(QSize(500,40))
+        self.myNameLabel.setParent(self.myBaseWidget)
+        self.myNameLabel.move(30, 10)
+
+        #SCORE LABEL
+        self.myScoreLabel=QLabel()
+        self.myScoreLabel.setStyleSheet("color: white")
+        self.myScoreLabel.setFont(QFont("Helvetica",20))
+        self.myScoreLabel.setText("Score:")
+        self.myScoreLabel.setParent(self.myBaseWidget)
+        self.myScoreLabel.move(900,200)
+
         #SETUP GAME
         self.myLabelGameFrame=GameLabel(self.myBaseWidget)
         self.myLabelGameFrame.myBtnList=fn.initButtonsForGame(self.myLabelGameFrame,self.myGameEngine.getGameState(),self)
+        #doar initializez butoanele, nu le si aleg layout-ul
 
 
         #TIMER FOR UPDATES
@@ -96,6 +128,9 @@ class GameInterface(QMainWindow):
             pass
 
     def updateUI(self):
+        if self.myUsername!="":
+
+            self.myNameLabel.setText("Username: "+self.myUsername)
         for i in range(3):
             for j in range(3):
                 for btnList in self.myLabelGameFrame.myBtnList:

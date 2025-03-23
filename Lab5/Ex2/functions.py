@@ -1,3 +1,4 @@
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QPushButton, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QMainWindow
 from PyQt5.QtCore import QSize
 import constants as c
@@ -15,28 +16,40 @@ def initButtonsForGame(myParentLabel:QLabel,currentState,root:QMainWindow)->list
 
     btn00=i.GameButton("00",c.GAME_BTN_WIDTH,c.GAME_BTN_HEIGHT,myParentLabel,root);hBoxLayout1.insertWidget(0,btn00)
     btn00.clicked.connect(lambda:mq.Process(mq.putMsgToQueue("MOVE.00",root.movesQueue)).start())
+    btn00.setStyleSheet("color: white")
+    btn00.setFont(QFont("Helvetica",80))
     firstRow.append(btn00)
 
     btn01=i.GameButton("01",c.GAME_BTN_WIDTH,c.GAME_BTN_HEIGHT,myParentLabel,root);hBoxLayout1.insertWidget(1,btn01)
     btn01.clicked.connect(lambda:mq.Process(mq.putMsgToQueue("MOVE.01",root.movesQueue)).start())
+    btn01.setStyleSheet("color: white")
+    btn01.setFont(QFont("Helvetica", 80))
     firstRow.append(btn01)
 
     btn02=i.GameButton("02",c.GAME_BTN_WIDTH,c.GAME_BTN_HEIGHT,myParentLabel,root);hBoxLayout1.insertWidget(2,btn02)
     btn02.clicked.connect(lambda:mq.Process(mq.putMsgToQueue("MOVE.02",root.movesQueue)).start())
+    btn02.setStyleSheet("color: white")
+    btn02.setFont(QFont("Helvetica", 80))
     firstRow.append(btn02)
 
 
 
     btn10=i.GameButton("10",c.GAME_BTN_WIDTH,c.GAME_BTN_HEIGHT,myParentLabel,root);hBoxLayout2.insertWidget(0,btn10)
     btn10.clicked.connect(lambda:mq.Process(mq.putMsgToQueue("MOVE.10",root.movesQueue)).start())
+    btn10.setStyleSheet("color: white")
+    btn10.setFont(QFont("Helvetica", 80))
     secondRow.append(btn10)
 
     btn11=i.GameButton("11",c.GAME_BTN_WIDTH,c.GAME_BTN_HEIGHT,myParentLabel,root);hBoxLayout2.insertWidget(1,btn11)
     btn11.clicked.connect(lambda:mq.Process(mq.putMsgToQueue("MOVE.11",root.movesQueue)).start())
+    btn11.setStyleSheet("color: white")
+    btn11.setFont(QFont("Helvetica", 80))
     secondRow.append(btn11)
 
     btn12=i.GameButton("12",c.GAME_BTN_WIDTH,c.GAME_BTN_HEIGHT,myParentLabel,root);hBoxLayout2.insertWidget(2,btn12)
     btn12.clicked.connect(lambda:mq.Process(mq.putMsgToQueue("MOVE.12",root.movesQueue)).start())
+    btn12.setStyleSheet("color: white")
+    btn12.setFont(QFont("Helvetica", 80))
     secondRow.append(btn12)
 
 
@@ -44,14 +57,20 @@ def initButtonsForGame(myParentLabel:QLabel,currentState,root:QMainWindow)->list
 
     btn20=i.GameButton("20",c.GAME_BTN_WIDTH,c.GAME_BTN_HEIGHT,myParentLabel,root);hBoxLayout3.insertWidget(0,btn20)
     btn20.clicked.connect(lambda:mq.Process(mq.putMsgToQueue("MOVE.20",root.movesQueue)).start())
+    btn20.setStyleSheet("color: white")
+    btn20.setFont(QFont("Helvetica", 80))
     thirdRow.append(btn20)
 
     btn21=i.GameButton("21",c.GAME_BTN_WIDTH,c.GAME_BTN_HEIGHT,myParentLabel,root);hBoxLayout3.insertWidget(1,btn21)
     btn21.clicked.connect(lambda:mq.Process(mq.putMsgToQueue("MOVE.21",root.movesQueue)).start())
+    btn21.setStyleSheet("color: white")
+    btn21.setFont(QFont("Helvetica", 80))
     thirdRow.append(btn21)
 
     btn22=i.GameButton("22",c.GAME_BTN_WIDTH,c.GAME_BTN_HEIGHT,myParentLabel,root);hBoxLayout3.insertWidget(2,btn22)
     btn22.clicked.connect(lambda:mq.Process(mq.putMsgToQueue("MOVE.22",root.movesQueue)).start())
+    btn22.setStyleSheet("color: white")
+    btn22.setFont(QFont("Helvetica", 80))
     thirdRow.append(btn22)
 
 

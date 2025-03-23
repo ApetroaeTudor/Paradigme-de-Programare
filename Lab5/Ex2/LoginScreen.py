@@ -48,7 +48,7 @@ class LoginScreen(QMainWindow):
 
         # TITLE LABEL
         self.myTitleLabel = QLabel(); self.myTitleLabel.setText("LOG-IN"); self.myTitleLabel.setFont(QFont("Helvetica", 23, QFont.Bold))
-        self.myTitleLabel.setStyleSheet("background-color : rgba(255, 0, 0, 0.2); color: white ")
+        self.myTitleLabel.setStyleSheet("background-color : rgba(255, 0, 0, 0.2); color: white; border-radius: 5px;")
         self.myHBoxLayout1.insertWidget(0, self.myTitleLabel)
         self.myHBoxLayout1.setAlignment(Qt.AlignCenter)
 
@@ -57,7 +57,7 @@ class LoginScreen(QMainWindow):
         self.myUserLabel.setText("User:")
         self.myUserLabel.setFont(QFont("Helvetica", 14, QFont.Bold))
         self.myUserLabel.setAlignment(Qt.AlignCenter)
-        self.myUserLabel.setStyleSheet("background-color : rgba(255, 0, 0, 0.2); color: white ")
+        self.myUserLabel.setStyleSheet("background-color : rgba(255, 0, 0, 0.2); color: white; border-radius: 5px;")
         self.myUserLabel.setFixedSize(QSize(60, 30))
 
         self.myUserTextField = QTextEdit()
@@ -73,7 +73,7 @@ class LoginScreen(QMainWindow):
         self.myPasswordLabel.setText("Pass:")
         self.myPasswordLabel.setFont(QFont("Helvetica", 14, QFont.Bold))
         self.myPasswordLabel.setAlignment(Qt.AlignCenter)
-        self.myPasswordLabel.setStyleSheet("background-color : rgba(255, 0, 0, 0.2); color: white ")
+        self.myPasswordLabel.setStyleSheet("background-color : rgba(255, 0, 0, 0.2); color: white; border-radius: 5px;")
         self.myPasswordLabel.setFixedSize(QSize(60, 30))
 
         self.myPasswordTextField = QTextEdit()
@@ -94,7 +94,7 @@ class LoginScreen(QMainWindow):
 
 
         # ERROR LABEL
-        self.myErrorLabel=QLabel(); self.myErrorLabel.setFixedSize(QSize(120, 30)); self.myErrorLabel.setStyleSheet("background-color : rgba(255, 0, 0, 0.2); color: white ")
+        self.myErrorLabel=QLabel(); self.myErrorLabel.setFixedSize(QSize(120, 30)); self.myErrorLabel.setStyleSheet("background-color : rgba(255, 0, 0, 0.2); color: white ; border-radius: 5px;")
         self.myErrorLabel.setParent(self.myMainWidget)
         self.myErrorLabel.setAlignment(Qt.AlignCenter)
         self.myErrorLabel.move(140,440)

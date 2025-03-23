@@ -35,7 +35,7 @@ class WelcomeScreen(QMainWindow):
         self.ERROR_QUEUE=ERROR_QUEUE
         self.myDBManager=dbm.DatabaseManager(self.ERROR_QUEUE)
         self.myLoginScreen = ls.LoginScreen(self.myDBManager,ERROR_QUEUE,LOGGED_USERS_QUEUE)
-        self.myRegisterScreen = rs.RegisterScreen(self.myDBManager,ERROR_QUEUE)
+        self.myRegisterScreen = rs.RegisterScreen(self.myDBManager,ERROR_QUEUE,LOGGED_USERS_QUEUE)
         self.myWaitingForPlayersScreen = wfp.WaitingForPlayersWindow()
 
         #MAIN SETUP
@@ -58,7 +58,7 @@ class WelcomeScreen(QMainWindow):
         self.myMainWidget.setLayout(self.myVBoxMainLayout)
 
         #TITLE LABEL
-        self.myTitleLabel=QLabel(); self.myTitleLabel.setText("WELCOME"); self.myTitleLabel.setFont(QFont("Helvetica",23,QFont.Bold)); self.myTitleLabel.setStyleSheet("background-color : rgba(255, 0, 0, 0.2); color: white ")
+        self.myTitleLabel=QLabel(); self.myTitleLabel.setText("WELCOME"); self.myTitleLabel.setFont(QFont("Helvetica",23,QFont.Bold)); self.myTitleLabel.setStyleSheet("background-color : rgba(255, 0, 0, 0.2); color: white; border-radius: 5px; ")
         self.myHBoxLayout1.insertWidget(0,self.myTitleLabel)
         self.myHBoxLayout1.setAlignment(Qt.AlignCenter)
 
@@ -112,7 +112,7 @@ class WelcomeScreen(QMainWindow):
         if self.myRegisterScreen.getRegisterStatus():
             self.authDone=True
             self.myRegisterScreen.toggleOff()
-            self.myUsername=self.myLoginScreen.getUsername()
+            self.myUsername=self.myRegisterScreen.getUsername()
 
         if self.authDone:
             self.LOGIN_QUEUE.put(f"LOGIN.{self.myUsername}")
@@ -128,6 +128,7 @@ class WelcomeScreen(QMainWindow):
         if nrOfLoggedPlayers == 2:
             self.myWaitingForPlayersScreen.toggleOff()
             self.MAIN_GAME.toggleOn()
+            self.MAIN_GAME.myUsername=self.myUsername
 
     def getAuthStatus(self):
         return self.authDone
