@@ -80,7 +80,7 @@ class WelcomeScreen(QMainWindow):
         #CHECKING LOGIN STATUS LOOP TIMER
         self.myLoopTimer=QTimer()
         self.myLoopTimer.timeout.connect(self.checkLoop)
-        self.myLoopTimer.start(1000)
+        self.myLoopTimer.start(200)
 
 
         #WAIT FOR GAME TIMER

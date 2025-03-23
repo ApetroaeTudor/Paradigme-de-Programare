@@ -16,6 +16,22 @@ class GeneralManager(BaseManager):
     pass
 
 
+def checkMovesState():
+    while True:
+        moveList=[]
+        while True:
+            try:
+                move=movesQueue.get_nowait()
+                moveList.append(move)
+            except:
+                break
+        print(moveList)
+        print("EngineTurnSERVER:"+str(SERVER_game_engine.getTurn()))
+        for move in moveList:
+            movesQueue.put(move)
+        time.sleep(1)
+
+
 class LoginManager():
     authenticationStatus=0 #0=0 users connected,1=1 user connected, 2=2 users connected
 
@@ -54,6 +70,10 @@ if __name__=="__main__":
     GeneralManager.register('get_GameEngine',callable=lambda: SERVER_game_engine,exposed=['getGameState','checkCurrentState','getTurn','takeMoveFromPlayer','resetBoard','getNrOfLoggedPlayers','incrementNrOfLoggedPlayers'])
     GeneralManager.register('get_MovesQueue',callable=lambda: movesQueue)
     GeneralManager.register('get_LoggedUsersQueue',callable=lambda: loggedUsersQueue)
+
+    myThread = threading.Thread(target=checkMovesState, daemon=True)
+    myThread.start()
+
 
     server=myGeneralManager.get_server()
     server.serve_forever()
