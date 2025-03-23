@@ -1,4 +1,5 @@
 from multiprocessing import Process, Queue
+import msgQueue as mq
 
 class MyGame:
     currentState=[["-","-","-"],
@@ -24,11 +25,11 @@ class MyGame:
 
         return True
     
-    def takeMoveFromPlayer(self,row:int,column:int,turnNr:int):
+    def takeMoveFromPlayer(self,row:int,column:int):
         if self.validateMove(row,column):
-            if turnNr==0:
+            if self.turn==0:
                 self.currentState[row][column]='X'
-            elif turnNr==1:
+            elif self.turn==1:
                 self.currentState[row][column]='O'
             self.turn=(self.turn+1)%2
 
@@ -85,7 +86,17 @@ class MyGame:
             returnList[0]=0
             returnList[1]=0
             return returnList
+        if self.currentState[0][2]=='X' and self.currentState[1][1]=='X' and self.currentState[2][0]=='X':
+            returnList[0]=0
+            returnList[1]=0
+            return returnList
+
+
         if self.currentState[0][0]=='O' and self.currentState[1][1]=='O' and self.currentState[2][2]=='O':
+            returnList[0]=0
+            returnList[1]=1
+            return returnList
+        if self.currentState[0][2]=='O' and self.currentState[1][1]=='O' and self.currentState[2][0]=='O':
             returnList[0]=0
             returnList[1]=1
             return returnList
@@ -100,25 +111,29 @@ class MyGame:
             print(elem)
         print("\n")
 
-    def gameLoop(self):
-        activeState=self.checkCurrentState()
-        while activeState[0]==1:
-            self.printBoard()
-            while True:
-                row=int(input('row='))
-                col=int(input('col='))
-                if self.validateMove(row-1,col-1)==True:
-                    break
-            self.takeMoveFromPlayer(row-1,col-1,self.turn)
-            activeState=self.checkCurrentState()
-
-        self.printBoard()
-        if activeState[1]==0:
-            print("X wins")
-        elif activeState[1]==1:
-            print("0 wins")
-        elif activeState[1]==2:
-            print("tie")
-
-
-myXOgame=MyGame()
+#     def gameLoop(self):
+#         activeState=self.checkCurrentState()
+#         while activeState[0]==1:
+#             self.printBoard()
+#             while True:
+#                 try:
+#                     move=mq.asyncQueue.get_nowait()
+#                     row=int(str(move)[0])
+#                     col=int(str(move)[1])
+#                     if self.validateMove(row, col):
+#                         break
+#                 except:
+#                     pass
+#             self.takeMoveFromPlayer(row,col)
+#             activeState=self.checkCurrentState()
+#
+#         self.printBoard()
+#         if activeState[1]==0:
+#             print("X wins")
+#         elif activeState[1]==1:
+#             print("0 wins")
+#         elif activeState[1]==2:
+#             print("tie")
+#
+#
+# myXOgame=MyGame()
