@@ -26,4 +26,4 @@
 ## Lab5
 **LabEx1** - Python + tkinter: Aplicatie cu interfata grafica in care introduc niste numere si le filtrez intr-un camp text. Basic error handling<br>
 **LabEx2** - Python + PyQt5: Aplicatie jurnal cu interfata grafica. Acces la o baza de date, scriere si citire din ea.<br>
-
+**Ex2** - Python + PyQt5: Joc TicTacToe peer-to-peer. Deschid un server care da manage la datele despre joc si trebuie sa se conecteze 2 jucatori pentru a incepe. Autentificare cu baza de date sqlite.<br>
