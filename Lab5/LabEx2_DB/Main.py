@@ -176,12 +176,12 @@ class MainWindow(QMainWindow):
         #1. NO ENTRIES MESSAGE
         self.myNoEntriesLabel=QLabel()
         self.myNoEntriesLabel.setText("No entries")
-        self.myNoEntriesLabel.setStyleSheet("color: rgba(255, 255, 255, 192);")
+        self.myNoEntriesLabel.setStyleSheet("color: white;")
         if myDB.getNrOfEntries()==0:
             self.myNoEntriesLabel.show()
         self.myNoEntriesLabel.setFont(QFont("Helvetica",dim.LARGE_FONT_SIZE))
         self.myNoEntriesLabel.setParent(self.myRightPanel)
-        self.myNoEntriesLabel.move(90,50)
+        self.myNoEntriesLabel.move(50,50)
 
         #2. ENTRIES LIST: EACH ENTRY WILL BE A LABEL WITH THE TITLE OF THE ENTRY + BUTTON TO LOAD (max 5 entries)
         if not myDB.getNrOfEntries()==0:

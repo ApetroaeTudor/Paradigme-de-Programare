@@ -28,6 +28,12 @@ def enableButtonMatrix(myBtnMatrix:list[list[QPushButton]]):
     for elem in myBtnMatrix:
         enableButtons(elem)
 
+def colorAllButtons(myBtnMatrix:list[list[QPushButton]],color:str):
+    for elem in myBtnMatrix:
+        for btn in elem:
+            btn.setStyleSheet("color"+color)
+            btn.update()
+
 
 
 def initButtonsForGame(myParentLabel:QLabel,currentState,root:QMainWindow)->list:

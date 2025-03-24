@@ -4,7 +4,8 @@ from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtWidgets import QApplication,QPushButton,QLabel,QMainWindow,QWidget
 from PyQt5.QtCore import Qt, QSize, QPropertyAnimation, QRect, QPoint, QTimer, QEvent
 
-from functions import enableButtonMatrix, disableButtonMatrix, setLabelWithText
+from SERVER import logInQueue
+from functions import enableButtonMatrix, disableButtonMatrix, setLabelWithText,colorAllButtons
 from gameEngine import MyGame
 import constants as c
 
@@ -57,12 +58,14 @@ class GameInterface(QMainWindow):
         self.movesQueue=movesQueue
 
         self.myUsername=""
+        self.myScoreLabelText=""
 
 
         #SETUP MAIN WINDOW
         self.myBaseWidget=QWidget()
         self.myBaseWidget.setStyleSheet("background: #2e2e2e")
         self.myBaseWidget.setFixedSize(QSize(c.WINDOW_WIDTH,c.WINDOW_HEIGHT))
+        self.setMaximumSize(c.WINDOW_WIDTH,c.WINDOW_HEIGHT)
         self.setWindowTitle("XO")
         self.setCentralWidget(self.myBaseWidget)
         self.myBaseWidget.setParent(self)
@@ -76,6 +79,14 @@ class GameInterface(QMainWindow):
         self.myLogoLabel.setParent(self.myBaseWidget)
         self.myLogoLabel.move(850,100)
 
+        #SCORE LABEL
+        self.myScoreLabel=QLabel()
+        self.myScoreLabel.setParent(self.myBaseWidget)
+        self.myScoreLabel.setFixedSize(QSize(500,100))
+        self.myScoreLabel.setStyleSheet("color: white")
+        self.myScoreLabel.setFont(QFont("Helvetica",13))
+        self.myScoreLabel.move(900,0)
+        self.myScoreLabel.setText("")
 
         #WIN LABEL
         self.winLabel=QLabel()
@@ -134,8 +145,22 @@ class GameInterface(QMainWindow):
                     self.setWindowTitle("XO-Player"+str(self.playerNr))
                 else:
                     self.loginQueue.put(msg)
+
             except:
                 pass
+
+
+        if self.myScoreLabelText=="":
+            try:
+                msg=self.loginQueue.get_nowait()
+                if str(msg).split(".")[0] == "SCORE":
+                    self.myScoreLabelText = str(msg).split(".")[1]
+                else:
+                    self.loginQueue.put(msg)
+            except:
+                pass
+
+
 
         try:
             msg = self.movesQueue.get_nowait()
@@ -150,6 +175,14 @@ class GameInterface(QMainWindow):
             pass
 
     def updateUI(self):
+         #playerNR1 == X
+        if self.playerNr==1:
+            colorAllButtons(self.myLabelGameFrame.myBtnList,"orange")
+        elif self.playerNr==0:
+            colorAllButtons(self.myLabelGameFrame.myBtnList,"red")
+
+        if self.myScoreLabel.text()=="":
+            setLabelWithText(self.myScoreLabel,self.myScoreLabelText)
         # print("???:"+str(self.myGameEngine.getTurn())+"   "+str(self.playerNr))
 
         if int(self.myGameEngine.getTurn())!=int(self.playerNr): #?????????????????????????????????????????????????????????????????????
@@ -159,6 +192,8 @@ class GameInterface(QMainWindow):
         else:
             disableButtonMatrix(self.myLabelGameFrame.myBtnList)
         #print("EngineTurnCLIENT:" + str(self.myGameEngine.getTurn()))
+
+
 
         if self.myUsername!="":
             if int(self.playerNr)==0:
@@ -184,10 +219,14 @@ class GameInterface(QMainWindow):
             self.myUpdateTimer.stop()
             if gamestate[1]==0:
                 self.winLabel.setPixmap(QPixmap("res/X_WINS.png"))
+                if int(self.playerNr) == 1:
+                    self.loginQueue.put("WINNER."+self.myUsername)
                 self.winLabel.setScaledContents(True)
                 self.winLabel.show()
             elif gamestate[1]==1:
                 self.winLabel.setPixmap(QPixmap("res/O_WINS.png"))
+                if int(self.playerNr) == 0:
+                    self.loginQueue.put("WINNER." + self.myUsername)
                 self.winLabel.setScaledContents(True)
                 self.winLabel.show()
             elif gamestate[1]==2:

@@ -40,6 +40,7 @@ class WelcomeScreen(QMainWindow):
 
         #MAIN SETUP
         self.setWindowTitle("Log-in")
+        self.setMaximumSize(400,500)
         self.myMainWidget=QWidget(); self.myMainWidget.setFixedSize(400,500); self.setCentralWidget(self.myMainWidget)
         self.myMainWidget.setStyleSheet("background-color: #2e2e2e ")
 

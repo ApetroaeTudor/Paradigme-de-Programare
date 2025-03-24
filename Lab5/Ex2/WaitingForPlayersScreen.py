@@ -13,15 +13,16 @@ class WaitingForPlayersWindow(QMainWindow):
 
         self.myMainWidget = QWidget()
         self.myMainWidget.setFixedSize(QSize(400, 400))
+        self.setMaximumSize(400,400)
         self.myMainWidget.setStyleSheet("background-color: #2e2e2e")
         self.myMainWidget.setParent(self)
         self.setCentralWidget(self.myMainWidget)
 
         # TITLE LABEL
         self.myTitleLabel = QLabel()
-        self.myTitleLabel.setFixedSize(QSize(350, 100))
+        # self.myTitleLabel.setFixedSize(QSize(350, 100))
         self.myTitleLabel.setStyleSheet("color: white ")
-        self.myTitleLabel.setFont(QFont("Helvetica", 30))
+        self.myTitleLabel.setFont(QFont("Helvetica", 20))
         self.myTitleLabel.setText("Waiting for players..")
 
         # NR OF PLAYERS LABEL

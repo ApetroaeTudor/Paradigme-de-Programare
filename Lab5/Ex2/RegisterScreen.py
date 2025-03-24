@@ -5,6 +5,8 @@ import sys
 import DB_Manager as dbm
 from multiprocessing import Process,Queue
 
+import re
+
 
 class RegisterScreen(QMainWindow):
     registerDone:bool
@@ -21,7 +23,7 @@ class RegisterScreen(QMainWindow):
 
         # MAIN SETUP
         self.setWindowTitle("Register"); self.myMainWidget = QWidget(); self.myMainWidget.setFixedSize(400, 500); self.setCentralWidget(self.myMainWidget); self.myMainWidget.setStyleSheet("background-color: #2e2e2e ")
-
+        self.setMaximumSize(400,500)
         # HBOXES
         self.myHBoxLayout1 = QHBoxLayout();self.myHBoxLayout2 = QHBoxLayout();self.myHBoxLayout3 = QHBoxLayout();self.myHBoxLayout4 = QHBoxLayout();self.myHBoxLayout5 = QHBoxLayout()
 
@@ -122,15 +124,15 @@ class RegisterScreen(QMainWindow):
 
     def attemptRegister_TiedToRegisterBtn(self):
         myInput_Email = self.myEmailTextField.toPlainText()
-        if not myInput_Email:
+        if not myInput_Email or myInput_Email.isspace(): #or not re.fullmatch(myInput_Email,r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+$"):
             self.setErrorLabel("No Email", self.myErrorTimer)
             return
         myInput_Username=self.myUserTextField.toPlainText()
-        if not myInput_Username:
+        if not myInput_Username or myInput_Username.isspace():
             self.setErrorLabel("No Username",self.myErrorTimer)
             return
         myInput_Password=self.myPasswordTextField.toPlainText()
-        if not myInput_Password:
+        if not myInput_Password or myInput_Password.isspace():
             self.setErrorLabel("No Pass",self.myErrorTimer)
             return
 

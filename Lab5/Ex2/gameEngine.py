@@ -7,6 +7,8 @@ class MyGame:
                   ["-","-","-"]]
     turn=0 #turn0 e player1=X, turn1 e player2=O
 
+    currentScore=("InvalidUser",0,"InvalidUser",0)
+
 
     def __init__(self):
         self.nrOfLoggedPlayers = 0
@@ -125,3 +127,7 @@ class MyGame:
 
     def incrementNrOfLoggedPlayers(self):
         self.nrOfLoggedPlayers+=1
+
+    def getCurrentScore(self):
+        return self.currentScore
+

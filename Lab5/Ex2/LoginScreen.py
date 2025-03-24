@@ -25,7 +25,7 @@ class LoginScreen(QMainWindow):
 
         # MAIN SETUP
         self.setWindowTitle("LOG-IN"); self.myMainWidget = QWidget(); self.myMainWidget.setFixedSize(400, 500); self.setCentralWidget(self.myMainWidget); self.myMainWidget.setStyleSheet("background-color: #2e2e2e ")
-
+        self.setMaximumSize(400,500)
         # HBOXES
         self.myHBoxLayout1 = QHBoxLayout();self.myHBoxLayout2 = QHBoxLayout();self.myHBoxLayout3 = QHBoxLayout();self.myHBoxLayout4 = QHBoxLayout();self.myHBoxLayout5 = QHBoxLayout()
 
