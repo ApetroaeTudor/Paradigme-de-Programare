@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7255c1f5-271a-45dc-af7d-713d8197b6f7" name="Changes" comment="" />
+    <list default="true" id="7255c1f5-271a-45dc-af7d-713d8197b6f7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../Ex2/MainDB.db" beforeDir="false" afterPath="$PROJECT_DIR$/../Ex2/MainDB.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/LabEx1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/LabEx1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LabEx1.py" beforeDir="false" afterPath="$PROJECT_DIR$/LabEx1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabEx2_DB/journal.db" beforeDir="false" afterPath="$PROJECT_DIR$/../LabEx2_DB/journal.db" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,7 +35,8 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/tudor/AN2/PP/pp-1211b-homeworks-ApetroaeTudor/Lab5/LabEx1.py"
+    "last_opened_file_path": "/home/tudor/AN2/PP/pp-1211b-homeworks-ApetroaeTudor/Lab5/LabEx2_DB",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
   <component name="RecentsManager">

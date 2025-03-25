@@ -11,6 +11,7 @@ user1=""
 user2=""
 
 SERVER_game_engine = gm.MyGame()
+
 SERVER_error_queue = mp.Queue()
 SERVER_score=("InvalidUser",0,"InvalidUser",0)
 logInQueue = mp.Queue()
@@ -64,6 +65,7 @@ def checkState():
 
         try:
             msg=logInQueue.get_nowait()
+
             if str(msg).split(".")[0]=="WINNER":
                 winnerName=str(msg).split(".")[1]
                 winnerID=SERVER_DB_Manager.getIDbyName(winnerName)

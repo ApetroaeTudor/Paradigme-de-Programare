@@ -9,7 +9,7 @@ class baseFrame:
 
         #ROOT
         self.root=ROOT
-        self.root.geometry("960x300")
+        self.root.geometry("1200x300")
         self.root.resizable(False,False)
         self.root.title("ListManager")
 
