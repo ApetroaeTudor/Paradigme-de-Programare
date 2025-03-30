@@ -26,4 +26,11 @@
 ## Lab5
 **LabEx1** - Python + tkinter: Aplicatie cu interfata grafica in care introduc niste numere si le filtrez intr-un camp text. Basic error handling<br>
 **LabEx2** - Python + PyQt5: Aplicatie jurnal cu interfata grafica. Acces la o baza de date, scriere si citire din ea.<br>
-**Ex2** - Python + PyQt5: Joc TicTacToe peer-to-peer. Deschid un server care da manage la datele despre joc si trebuie sa se conecteze 2 jucatori pentru a incepe. Autentificare cu baza de date sqlite.<br>
+**Ex2** - Python + PyQt5: Joc TicTacToe peer-to-peer. Deschid un server care da manage la datele despre joc si trebuie sa se conecteze 2 jucatori pentru a incepe. Autentificare cu baza de date sqlite. Se tine scorul tot in baza de date.<br>
+
+## Lab6
+**LabEx1** - Python: Utilizare super()<br>
+**LabEx2** - Python: Method Resolution Order<br>
+**LabEx3** - Python: Polimorfism<br>
+**LabEx4** - Python: UML + niste clase<br>
+**Ex1** - Python: Un script care parcurge un director si in functie de anumite criterii determina felul fisierelor: ASCII, XML, UNICODE, Binary si BMP. Se incarca intr-o lista si se afiseaza cele mai importante date.<br>

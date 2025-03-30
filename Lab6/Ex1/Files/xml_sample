@@ -1,0 +1,12 @@
+<library>
+    <book id="1">
+        <title>Introduction to XML</title>
+        <author>Jane Doe</author>
+        <year>2023</year>
+    </book>
+    <book id="2">
+        <title>Advanced XML Parsing</title>
+        <author>John Smith</author>
+        <year>2024</year>
+    </book>
+</library>
