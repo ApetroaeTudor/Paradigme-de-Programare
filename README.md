@@ -34,3 +34,8 @@
 **LabEx3** - Python: Polimorfism<br>
 **LabEx4** - Python: UML + niste clase<br>
 **Ex1** - Python: Un script care parcurge un director si in functie de anumite criterii determina felul fisierelor: ASCII, XML, UNICODE, Binary si BMP. Se incarca intr-o lista si se afiseaza cele mai importante date.<br>
+
+
+## Lab7
+**LabEx1** - Kotlin: Parsing de date din journalctl.<br>
+**Ex1** - Kotlin: Parsing de date din /var/log/apt/history.log.<br>
