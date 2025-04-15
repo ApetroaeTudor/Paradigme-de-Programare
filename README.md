@@ -39,3 +39,8 @@
 ## Lab7
 **LabEx1** - Kotlin: Parsing de date din journalctl.<br>
 **Ex1** - Kotlin: Parsing de date din /var/log/apt/history.log.<br>
+
+## Lab8
+**LabEx1** - Kotlin: Lant dublu de responsabilitati.<br>
+**LabEx2** - Kotlin: Memento+Observer.<br>
+**Ex1** - Kotlin: AND gate cu bridge, builder si FSM.<br>
