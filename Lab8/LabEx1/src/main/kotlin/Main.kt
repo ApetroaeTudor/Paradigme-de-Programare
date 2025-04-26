@@ -35,7 +35,7 @@ fun main() {
     val msg1 = "1:Greetings"
     val msg2 = "2:Hello"
     val msg3 = "3:Hey"
-    val msg4 = "4:Hi"
+    val msg4 = "5:Hi"
 
     myCEOHandler2.handleRequest("right",msg1)
     println()
