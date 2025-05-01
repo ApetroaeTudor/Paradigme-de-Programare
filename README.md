@@ -46,7 +46,7 @@
 **Ex1** - Kotlin: AND gate cu bridge, builder si FSM.<br>
 
 ## Lab10
-##  Kotlin:
+###  Kotlin:
 **LabEx1** - Evitare a race-ului cu mutex. Scriere concurenta pe disc.<br>
 **LabEx2** - Implementare semafor pentru acces thread-safe la un fisier.<br>
 **Ex1** - Lant de responsabilitati dublu.<br>
