@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 import pandas as pd
 import copy
+import html
+import json
 
 class File(ABC):
     def __init__(self):
@@ -36,40 +38,61 @@ class HTMLFile(File):
     def __init__(self):
         super().__init__()
     def print_html(self):
-        data={'col1':[self.title],'col2':[self.author],'col3':[self.paragraphs]}
-        df=pd.DataFrame(data)
-        html_format_data=df.to_html()
-        print(html_format_data)
+        h_title=html.escape(self.title if self.title else "Untitled")
+        h_author=html.escape(self.author if self.author else "No author")
+        html_output = f"""<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{h_title}</title>
+</head>
+<body>
+    <h1>{h_title}</h1>
+    <p><em>By: {h_author}</em></p>
+"""
+        for p in self.paragraphs:
+            h_paragraph=html.escape(p)
+            html_output += f"    <p>{h_paragraph}</p>\n"
+        html_output += """</body>
+</html>"""
+        print(html_output)
+
+
+
 
 class JSONFile(File):
     def __init__(self):
         super().__init__()
     def print_json(self):
-        data={'col1':[self.title],'col2':[self.author],'col3':[self.paragraphs]}
-        df=pd.DataFrame(data)
-        json_format_data=df.to_json()
-        print(json_format_data)
+        data_to_serialize={
+            "title":self.title if self.title else "Untitled",
+            "author":self.author if self.author else "No author",
+            "paragraphs":self.paragraphs
+        }
+
+        json_output=json.dumps(data_to_serialize,indent=4)
+        print(json_output)
 
 class TextFile(File):
     def __init__(self):
         self.template=""
-        super().__init__(self)
+        super().__init__()
     def clone(self):
         return copy.deepcopy(self)
     @abstractmethod
     def print_text(self):
         pass
 
-class ArticleTextFile(File):
+class ArticleTextFile(TextFile):
     def __init__(self):
         self.template="article"
-        super().__init__(self)
+        super().__init__()
     def print_text(self):
-        print("\t{0}\n\t\tby{1}\n".format(self.title,self.author))
+        print("\t{0}\n\t\tby {1}\n".format(self.title,self.author))
         for p in self.paragraphs:
             print(p)
 
-class BlogTextFile(File):
+class BlogTextFile(TextFile):
     def __init__(self):
         self.template="blog"
         super().__init__()

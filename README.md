@@ -44,3 +44,13 @@
 **LabEx1** - Kotlin: Lant dublu de responsabilitati.<br>
 **LabEx2** - Kotlin: Memento+Observer.<br>
 **Ex1** - Kotlin: AND gate cu bridge, builder si FSM.<br>
+
+## Lab10
+##  Kotlin:
+**LabEx1** - Evitare a race-ului cu mutex. Scriere concurenta pe disc.<br>
+**LabEx2** - Implementare semafor pentru acces thread-safe la un fisier.<br>
+**Ex1** - Lant de responsabilitati dublu.<br>
+**Ex2** - Pipeline pentru procesare ADT.<br>
+**Ex3** - Suma a unor nr pentru valori luate dintr-o coada.<br>
+**Ex4** - Acces simultan la mai multe fisiere.<br>
+**Bonus** - Pipeline pentru descarcarea, parsarea si afisarea unei pagini web<br> 
