@@ -45,6 +45,13 @@
 **LabEx2** - Kotlin: Memento+Observer.<br>
 **Ex1** - Kotlin: AND gate cu bridge, builder si FSM.<br>
 
+## Lab9
+### Python
+**LabEx1** - Factory + Prototype.<br>
+**LabEx2** - Pipeline de generatoare.<br>
+**Ex1** - Lant de responsabilitati + Command.<br>
+**Ex2** - Vending machine cu State machine + Observer.<br>
+
 ## Lab10
 ###  Kotlin:
 **LabEx1** - Evitare a race-ului cu mutex. Scriere concurenta pe disc.<br>
