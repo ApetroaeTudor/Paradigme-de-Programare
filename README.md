@@ -51,6 +51,7 @@
 **LabEx2** - Pipeline de generatoare.<br>
 **Ex1** - Lant de responsabilitati + Command.<br>
 **Ex2** - Vending machine cu State machine + Observer.<br>
+**Ex3 + Bonus** - Proxy + Command + Strategy. Procesare a cererilor de tip GET, cu proxy pentru caching in forma unor fisiere text. MainApp care implementeaza prin Strategy pattern un algoritm de load balancing bazat pe cuante de timp. Cand se detecteaza intr-o cuanta de timp de 2 ori mai multe requesturi decat in cea anterioara se lanseaza un nou proces care primeste o parte din requesturi.<br>
 
 ## Lab10
 ###  Kotlin:
