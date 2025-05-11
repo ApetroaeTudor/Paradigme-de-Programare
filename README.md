@@ -62,3 +62,12 @@
 **Ex3** - Suma a unor nr pentru valori luate dintr-o coada.<br>
 **Ex4** - Acces simultan la mai multe fisiere.<br>
 **Bonus** - Pipeline pentru descarcarea, parsarea si afisarea unei pagini web<br> 
+
+## Lab11
+### Python:
+**LabEx1** - Operatii in paralel pe colectii simple.<br>
+**LabEx2** - Comunicare intre threaduri cu o coada.<br>
+**LabEx3** - Pipeline de procesare a unui ADT cu threaduri si cozi.<br>
+**Ex1** - asyncio - Se realizeaza patru sume simultan folosind corutine.<br>
+**Ex2** - Se proceseaza comenzi unix de tip pipe folosind pipe-ul din modului subprocessing.<br>
+**Ex3** - Implementare a unui ThreadPool care e auto-closable, implementeaza functia map ce primeste mai multe taskuri cu argumente si implementeaza un mecanism de load balancing ce imparte aceste taskuri intre threadurile componente.<br>

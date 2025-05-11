@@ -18,4 +18,6 @@ if __name__ == '__main__':
     kotlin_handler.next1 = bash_handler
     bash_handler.next1 = java_handler
 
+    python_handler.handleRequest(file1)
+    python_handler.handleRequest(file3)
     python_handler.handleRequest(file4)

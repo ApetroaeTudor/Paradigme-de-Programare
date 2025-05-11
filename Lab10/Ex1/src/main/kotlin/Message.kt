@@ -9,6 +9,8 @@ interface Message{
     fun getPriority():Int
 }
 
+
+
 class Request(override val primitiveFormat:String) : Message{
 
     override var nrOfMovesDone = 0;
@@ -27,10 +29,6 @@ class Request(override val primitiveFormat:String) : Message{
     override fun getPriority(): Int {
         return this.priority;
     }
-
-
-
-
 }
 
 

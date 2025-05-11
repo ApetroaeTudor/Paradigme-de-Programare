@@ -76,7 +76,7 @@ class DispatcherConcrete(DispatcherAbstract):
                     print("\nStarted process nr {}\n\n".format(i+1))
                     
 
-class Verifier(DispatcherAbstract):
+class Verifier(DispatcherAbstract):  #proxy
     def __init__(self):
         self.dispatcher_concrete = DispatcherConcrete()
     
