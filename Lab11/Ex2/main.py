@@ -42,7 +42,7 @@ processes[0].stdout.close()
 
 output, _ = processes[len(processes)-1].communicate()
 # astept ca procesul sa se termine, si dau unpack la output-ul scos din stdout
-# aici se returneaza 2 output-ul, stdout si stderr, ma intereseaza doar de stdout
+# aici se returneaza 2 output-uri, stdout si stderr, ma intereseaza doar de stdout
 
 print(output.decode())
 # functia decode primeste un 'byte object', aici un stream, si il converteste in string 

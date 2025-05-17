@@ -71,3 +71,11 @@
 **Ex1** - asyncio - Se realizeaza patru sume simultan folosind corutine.<br>
 **Ex2** - Se proceseaza comenzi unix de tip pipe folosind pipe-ul din modului subprocessing.<br>
 **Ex3** - Implementare a unui ThreadPool care e auto-closable, implementeaza functia map ce primeste mai multe taskuri cu argumente si implementeaza un mecanism de load balancing ce imparte aceste taskuri intre threadurile componente.<br>
+
+## Lab12
+### Kotlin:
+**ExercitiiLab** - Aplicatii calcul functional pe colectii. Delegates. Secvente. Functii extensie.<br>
+**Ex1** - Operatii pe o lista: filter, grupare, map, fold.<br>
+**Ex2** - Cifru Caesar pe cuvinte dintr-un fisier.<br>
+**Ex3** - Se dau mai multe puncte care trebuie sa formeze un poligon. Ele sunt ordonate in sens trigonometric si se calculeaza perimetrul poligonului.<br>
+**Ex4** - Functor pentru prelucrarea unui Map. 2 prelucrari in lant.<br>

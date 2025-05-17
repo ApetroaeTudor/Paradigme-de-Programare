@@ -34,7 +34,6 @@ class SignalingThread(threading.Thread):
 
 class MyThreadPool:
     def __init__(self, nr_of_threads:int):
-        self.taskDictLock = threading.Lock()
         self.is_active = True
         self.threads = []
         for i in range(nr_of_threads):
@@ -44,7 +43,7 @@ class MyThreadPool:
         
         
     def map(self,tasks:list,args:list[list]):
-        if self.is_active:
+        if self.is_active and len(self.threads) > 0:
             nr_of_passed_tasks = len(tasks)
             nr_of_tasks_per_thread = approximate_number(float(nr_of_passed_tasks)/float(self.nr_of_threads))
             print(nr_of_tasks_per_thread*self.nr_of_threads)
@@ -57,18 +56,12 @@ class MyThreadPool:
             elif int(nr_of_tasks_per_thread)*int(self.nr_of_threads) >= nr_of_passed_tasks:
                 nr_of_distributed_tasks = int(0)
                 for i in range(len(self.threads)):
-                    if i == len(self.threads) - 1: #ult thread
                         for _ in range(nr_of_tasks_per_thread):
                             if nr_of_distributed_tasks <= nr_of_passed_tasks:
                                 if(i<len(self.threads) and nr_of_distributed_tasks < len(tasks) and nr_of_distributed_tasks< len(args)):
                                     self.threads[i].add_task(tasks[nr_of_distributed_tasks],args[nr_of_distributed_tasks])
                                     nr_of_distributed_tasks+=1
-                    else:
-                        for _ in range(nr_of_tasks_per_thread):
-                            if nr_of_distributed_tasks <= nr_of_passed_tasks:
-                                if(i<len(self.threads) and nr_of_distributed_tasks<len(tasks) and nr_of_distributed_tasks<len(args)):
-                                    self.threads[i].add_task(tasks[nr_of_distributed_tasks],args[nr_of_distributed_tasks])
-                                    nr_of_distributed_tasks+=1
+                   
                         
                 # ult thread primeste cu un task mai putin
             elif int(nr_of_tasks_per_thread)*int(self.nr_of_threads) < nr_of_passed_tasks:
@@ -125,25 +118,28 @@ class MyThreadPool:
 def task1(arg1:str = None ,arg2:str = None):
     print("HelloFromTask1, with args: ")
     print(arg1 if arg1 else "not_defined" + " " + arg2 if arg2 else "not_defined")
-    time.sleep(0.5)
+    time.sleep(5)
 def task2(arg1:str = None):
     print("HelloFromTask2, with args: ")
     print(arg1 if arg1 else "not_defined")
-    time.sleep(0.5)
+    time.sleep(5)
 def task3():
     print("HelloFromTask3")
-    time.sleep(0.5)
+    time.sleep(5)
 def task4(arg1:str = None,arg2:str = None):
     print("HelloFromTask4, with args: ")
     print(arg1 if arg1 else "not_defined"+ " " +arg2 if arg2 else "not_defined")
-    time.sleep(0.5)
+    time.sleep(5)
     
 
 if __name__ == "__main__":
     
     
-    with MyThreadPool(15) as pool:
-        pool.map([task1,task2,task3,task4,task1,task3],[["hey","hello"],["salut"],[],["HELLOWORLD","hello_world"],[],[]])
+    with MyThreadPool(4) as pool:
+        pool.map([task1,task2,task3,task4,task1,task3,task1,task2,task3],[["hey","hello"],["salut"],[],["HELLOWORLD","hello_world"],[],[],[],[],[]])
+
+    
+  
         
     print("\n\nThis prints after the pool is terminated and all threads are joined")
         
